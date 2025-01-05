@@ -1,0 +1,38 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Retroverse" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@android:color/black</item>
+        <!-- Ajustar o conteúdo para a StatusBar transparente -->
+    </style>
+
+
+
+    <style name="Theme.Retroverse" parent="Base.Theme.Retroverse" />
+
+
+    <style name="CustomBlackButtonRoundedStyle" parent="Widget.AppCompat.Button">
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/button_background_rounded</item> <!-- Define a cor diretamente -->
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">@font/roboto</item> <!-- Padding no início -->
+    </style>
+
+    <style name="CustomWhiteEditTextRoundedStyleWithTint" parent="Widget.AppCompat.EditText">
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:paddingStart">15dp</item> <!-- Padding no início -->
+        <item name="android:drawablePadding">10dp</item> <!-- Padding no início -->
+        <item name="android:ems">10</item> <!-- Padding no início -->
+        <item name="android:fontFamily">@font/roboto</item> <!-- Padding no início -->
+        <item name="android:minHeight">56dp</item>
+        <item name="android:background">@drawable/button_background_rounded</item> <!-- Usa o mesmo drawable -->
+        <item name="android:backgroundTint">#FFFFFF</item> <!-- Cor de fundo branca -->
+        <item name="android:textColor">#000000</item> <!-- Texto em preto -->
+        <item name="android:gravity">start|center_vertical</item> <!-- Texto alinhado ao início -->
+        <item name="hintTextColor">#888888</item> <!-- Cor do hint -->
+    </style>
+</resources>
