@@ -1,0 +1,3 @@
+<style name="CustomActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <item name="android:color">@color/</item>
+</style>

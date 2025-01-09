@@ -30,11 +30,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity:1.8.0")
     testImplementation("junit:junit:4.13.2")
@@ -43,6 +42,9 @@ dependencies {
 
     implementation ("com.android.volley:volley:1.2.1")
     implementation ("com.airbnb.android:lottie:5.0.3") // Ou a versão mais recente
+
+    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 
 }

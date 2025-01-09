@@ -13,8 +13,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.retroverse.Listeners.AuthCreatAccountListener;
 import com.example.retroverse.Listeners.AuthListener;
+import com.example.retroverse.Listeners.ListaArtigosListener;
+import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,10 +30,9 @@ public class Singleton {
     private AuthListener loginListener;
     private AuthCreatAccountListener authCreatAccountListener;
 
-    private Singleton(Context context) {
+    private ListaArtigosListener listaArtigosListener;
 
-    }
-
+    public ArrayList<Artigo> artigos = new ArrayList<>();
     public static synchronized Singleton getInstance(Context context) {
         if (instance == null) {
             instance = new Singleton(context);
@@ -38,14 +40,24 @@ public class Singleton {
         }
         return instance;
     }
+    private Singleton(Context context){
+        artigos = new ArrayList<>();
+    }
 
+    //listeners
     public void setLoginListener(AuthListener listener) {
         this.loginListener = listener;
     }
     public void setCreatAccountListener(AuthCreatAccountListener listener) {
         this.authCreatAccountListener = listener;
     }
+    public void setArtigosListener(ListaArtigosListener listener) {
+        this.listaArtigosListener = listener;
+    }
+    //listeners
 
+
+    /// USER
     public void loginAPI(final String username, final String password, Context context) {
         if(!Utils.isConnectionInternet(context)){
             Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
@@ -132,5 +144,83 @@ public class Singleton {
         }
     }
 
+    /// USER
 
+    ///ARTIGOS
+    public void getAllArtigosAPI( String token,final String tipoartigo, final String tamanho, final String estado, final String marca, final String categoria, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "artigos/filtro?access-token=" + token;
+// Adicionando parâmetros à URL, se existirem
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta Artigos", response);
+
+                    // Parse da resposta JSON
+                    // Exemplo: Uma função fictícia para parse de artigos, adapte conforme necessário
+                    artigos = Utils.parseArtigosJson(response);
+
+                    // Chamando o listener para atualizar a UI com os artigos recebidos
+                    if (listaArtigosListener != null) {
+                        listaArtigosListener.onRefreshListaArtigos(artigos);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            // Configurando o RetryPolicy
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000, // Tempo de timeout em milissegundos (15 segundos)
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
+            ));
+
+            // Adicionando a requisição à fila de requisições do Volley
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    public Artigo getArtigo(int id){
+        for(Artigo l:artigos){
+            if(l.getId() == id){
+                return l;
+            }
+        }
+        return null;
+    }
+    // Filter non-premium articles
+    public ArrayList<Artigo> filterNonPremiumArticles() {
+        ArrayList<Artigo> nonPremiumArticles = new ArrayList<>();
+
+        for (Artigo article : artigos) {
+            if (!article.isPremium()) {
+                nonPremiumArticles.add(article);
+            }
+        }
+
+        return nonPremiumArticles;
+    }
+
+    // Filter premium articles
+    public ArrayList<Artigo> filterPremiumArticles() {
+        ArrayList<Artigo> premiumArticles = new ArrayList<>();
+
+        for (Artigo article : artigos) {
+            if (article.isPremium()) {
+                premiumArticles.add(article);
+            }
+        }
+
+        return premiumArticles;
+    }
+    /// ARTICLES
 }

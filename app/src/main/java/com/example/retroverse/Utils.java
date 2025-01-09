@@ -1,18 +1,26 @@
 package com.example.retroverse;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.example.retroverse.Models.Artigo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
     public static boolean isConnectionInternet(Context context){
@@ -51,7 +59,6 @@ public class Utils {
         if (jsonResponse.has("message")) {
             errorMessage = jsonResponse.optString("message", errorMessage);
         }
-
         switch (statusCode) {
             case 400:
                 errorMessage = "Erro 400: Solicitação inválida";
@@ -91,5 +98,28 @@ public class Utils {
             throw new RuntimeException(e);
         }
         return token;
+    }
+
+
+
+    ///artigos
+    public static ArrayList<Artigo> parseArtigosJson(String jsonResponse) {
+        // Criar uma instância de Gson
+        Gson gson = new Gson();
+
+        // Definir o tipo de retorno (uma ArrayList de Artigos)
+        Type tipoListaArtigos = new TypeToken<ArrayList<Artigo>>() {}.getType();
+
+        // Deserializar o JSON para o ArrayList de artigos
+        ArrayList<Artigo> artigos = gson.fromJson(jsonResponse, tipoListaArtigos);
+
+        return artigos;
+    }
+    ///
+    public static String getToken(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+
+        return token != null ? token : "false";
     }
 }

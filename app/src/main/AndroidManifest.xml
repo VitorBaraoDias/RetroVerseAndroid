@@ -17,10 +17,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".CreateAccountActivity"
+            android:name=".ArtigoActivities.ArtigoDetailsLojaActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AuthActivities.CreateAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AuthActivities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -1,4 +1,4 @@
-package com.example.retroverse;
+package com.example.retroverse.AuthActivities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.retroverse.Listeners.AuthCreatAccountListener;
 import com.example.retroverse.Modals.Modal;
+import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
 import com.google.android.material.snackbar.Snackbar;
 

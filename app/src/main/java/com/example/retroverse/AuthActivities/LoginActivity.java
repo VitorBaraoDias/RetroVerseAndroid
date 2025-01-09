@@ -1,4 +1,4 @@
-package com.example.retroverse;
+package com.example.retroverse.AuthActivities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.retroverse.Listeners.AuthListener;
+import com.example.retroverse.MainActivity;
 import com.example.retroverse.Modals.Modal;
+import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
 import com.google.android.material.snackbar.Snackbar;
 

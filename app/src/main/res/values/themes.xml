@@ -1,16 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Retroverse" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Base.Theme.Retroverse" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:statusBarColor">@android:color/black</item>
-        <!-- Ajustar o conteúdo para a StatusBar transparente -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorPrimaryContainer">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
     </style>
 
-
-
     <style name="Theme.Retroverse" parent="Base.Theme.Retroverse" />
-
 
     <style name="CustomBlackButtonRoundedStyle" parent="Widget.AppCompat.Button">
         <item name="android:padding">12dp</item>
@@ -30,9 +30,24 @@
         <item name="android:fontFamily">@font/roboto</item> <!-- Padding no início -->
         <item name="android:minHeight">56dp</item>
         <item name="android:background">@drawable/button_background_rounded</item> <!-- Usa o mesmo drawable -->
-        <item name="android:backgroundTint">#FFFFFF</item> <!-- Cor de fundo branca -->
-        <item name="android:textColor">#000000</item> <!-- Texto em preto -->
+        <item name="android:backgroundTint">@color/colorOnPrimary</item> <!-- Cor de fundo branca -->
+        <item name="android:textColor">@color/colorPrimary</item> <!-- Texto em preto -->
         <item name="android:gravity">start|center_vertical</item> <!-- Texto alinhado ao início -->
         <item name="hintTextColor">#888888</item> <!-- Cor do hint -->
     </style>
+    <style name="CustomBottomNavigationStyle">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+    </style>
+    <style name="CustomActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/colorPrimary</item>
+        <!-- Outras propriedades, como forma, podem ser definidas aqui -->
+    </style>
+    <style name="RoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item> <!-- Ajuste o valor conforme necessário -->
+    </style>
+
 </resources>

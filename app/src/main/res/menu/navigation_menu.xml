@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navHome"
+        android:icon="@drawable/rounded_home_24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    />
+    <item
+        android:id="@+id/search2"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="oi"
+
+        />
+    <item
+        android:id="@+id/search3"
+        android:icon="@drawable/email_icon"
+        android:title="oi"
+        />
+    <item
+        android:id="@+id/search4"
+        android:icon="@drawable/rounded_contacts_product_24"
+        android:title="oi"
+
+        />
+</menu>
