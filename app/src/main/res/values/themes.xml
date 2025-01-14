@@ -4,17 +4,16 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:statusBarColor">@android:color/black</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorPrimaryContainer">@color/colorPrimary</item>
-        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="backgroundColor">@color/backgroundColor</item>
     </style>
 
     <style name="Theme.Retroverse" parent="Base.Theme.Retroverse" />
 
     <style name="CustomBlackButtonRoundedStyle" parent="Widget.AppCompat.Button">
         <item name="android:padding">12dp</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_height">60dp</item>
         <item name="android:background">@drawable/button_background_rounded</item> <!-- Define a cor diretamente -->
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:fontFamily">@font/roboto</item> <!-- Padding no início -->

@@ -7,6 +7,7 @@
     android:gravity="center"
     app:cardBackgroundColor="@color/colorOnPrimary"
     app:cardCornerRadius="26dp"
+    app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/txtMarcaCard"
+            android:id="@+id/txtMarcaArtigoCarrinho"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
@@ -75,14 +76,14 @@
             android:textColor="@color/material_dynamic_neutral40"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView8"
-            app:layout_constraintEnd_toStartOf="@+id/txtMarcaCard"
+            app:layout_constraintEnd_toStartOf="@+id/txtMarcaArtigoCarrinho"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView8"
             app:layout_constraintTop_toTopOf="@+id/textView8"
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgArtigoCard"
+            android:id="@+id/imgArtigoCardCarrinho"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="15dp"

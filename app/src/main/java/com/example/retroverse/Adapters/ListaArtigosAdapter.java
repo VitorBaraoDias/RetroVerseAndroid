@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,9 +46,9 @@ public class ListaArtigosAdapter extends RecyclerView.Adapter<ListaArtigosAdapte
         TextView txtTamanhoCardArtigo, txtMarcaCard, txtPrecoArtigoCard;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgArtigoCard = (ImageView) itemView.findViewById(R.id.imgArtigoCard);
+            imgArtigoCard = (ImageView) itemView.findViewById(R.id.imgArtigoCardCarrinho);
             txtTamanhoCardArtigo = (TextView) itemView.findViewById(R.id.txtTamanhoCardArtigo);
-            txtMarcaCard = (TextView) itemView.findViewById(R.id.txtMarcaCard);
+            txtMarcaCard = (TextView) itemView.findViewById(R.id.txtMarcaArtigoCarrinho);
             txtPrecoArtigoCard = (TextView) itemView.findViewById(R.id.txtPrecoArtigoCard);
         }
     }

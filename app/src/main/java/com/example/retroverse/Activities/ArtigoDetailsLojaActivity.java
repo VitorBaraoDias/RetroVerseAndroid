@@ -1,4 +1,6 @@
-package com.example.retroverse.ArtigoActivities;
+package com.example.retroverse.Activities;
+
+import static java.security.AccessController.getContext;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,14 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
+import com.example.retroverse.Listeners.CartListener;
 import com.example.retroverse.Models.Artigo;
+import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
+import com.example.retroverse.Utils;
 
 import java.util.ArrayList;
 
 
-public class ArtigoDetailsLojaActivity extends AppCompatActivity implements ListaArtigosAdapter.OnItemClickListener {
+public class ArtigoDetailsLojaActivity extends AppCompatActivity implements ListaArtigosAdapter.OnItemClickListener, CartListener{
 
     RecyclerView recyclerViewRelatedItensLoja;
     ListaArtigosAdapter listaArtigosAdapter;
@@ -46,7 +51,6 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
         txtCondicaoDetailsLoja = findViewById(R.id.txtCondicaoDetailsLoja);
         txtDetailsSizeLoja = findViewById(R.id.txtDetailsSizeLoja);
         txtDetailsDescricaoLoja = findViewById(R.id.txtDetailsDescricaoLoja);
-
         imgPrimeiraImagemDetalhesLoja = findViewById(R.id.imgPrimeiraImagemDetalhesLoja);
 
 
@@ -56,7 +60,7 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
 
 
         carregarArtigo();
-        setAdapter(Singleton.getInstance(this).filterNonPremiumArticles());
+        setAdapter(Singleton.getInstance(this).filterNonPremiumArticles(id));
     }
 
     private void carregarArtigo(){
@@ -91,20 +95,21 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
     }
     @Override
     public void onItemClick(Artigo artigo, int position) {
-        Intent intent = new Intent(getApplicationContext(), ArtigoDetailsLojaActivity.class);
+        Intent intent = new Intent(this, ArtigoDetailsLojaActivity.class);
         intent.putExtra("ID", artigo.getId());
         startActivity(intent);
+        finish();
     }
     @Override
-    public void onBackPressed() {
-        // Exemplo: Retorna se algo foi editado (pode adicionar condições se necessário)
+    public void onAddCarrinho(Carrinho carrinho) {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("ACTION", "EDIT"); // ou "VIEWED" se não for alterado
+        resultIntent.putExtra("added_to_cart", true);
         setResult(Activity.RESULT_OK, resultIntent);
-        super.onBackPressed();
+        finish();
     }
-
     public void addToCart(View view) {
-
+        Singleton.getInstance(this).setCartListeneristener(this);
+        Singleton.getInstance(this).addToCartAPI(Utils.getToken(this), artigo.getId(), this);
     }
+
 }

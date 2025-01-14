@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ArtigoActivities.ArtigoDetailsLojaActivity">
+    tools:context=".Activities.ArtigoDetailsLojaActivity">
 
     <!-- ConstraintLayout que contém todos os elementos da tela -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -267,7 +267,9 @@
                 android:id="@+id/recyclerViewRelatedItensLoja"
                 android:layout_width="0dp"
                 android:layout_height="240dp"
+                android:layout_marginStart="-20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="-20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />

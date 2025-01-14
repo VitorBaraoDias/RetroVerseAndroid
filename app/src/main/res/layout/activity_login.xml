@@ -53,13 +53,16 @@
 
     <Button
         android:id="@+id/btnLogin"
-        style="@style/CustomBlackButtonRoundedStyle"
         android:layout_width="0dp"
+        android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="156dp"
+        android:backgroundTint="@color/colorOnSurface"
         android:onClick="clickLogin"
+
         android:text="LOGIN"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -143,8 +146,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/txtPassword"
         app:layout_constraintStart_toStartOf="@+id/txtPassword" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

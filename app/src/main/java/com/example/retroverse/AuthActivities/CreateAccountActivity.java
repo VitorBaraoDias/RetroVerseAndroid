@@ -1,6 +1,7 @@
 package com.example.retroverse.AuthActivities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.retroverse.Listeners.AuthCreatAccountListener;
+import com.example.retroverse.MainActivity;
 import com.example.retroverse.Modals.Modal;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
@@ -54,5 +56,12 @@ public class CreateAccountActivity extends AppCompatActivity implements AuthCrea
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token);
         editor.apply();
+        finish();
+    }
+
+    public void backMainActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
