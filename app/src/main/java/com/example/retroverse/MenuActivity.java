@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.retroverse.Fragments.HomeFragment;
+import com.example.retroverse.Fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -48,7 +49,11 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
         if(item.getItemId() == R.id.navHome) {
             setTitle(item.getTitle());
             fragment = new HomeFragment();
+        }  else if(item.getItemId() == R.id.navProfile) {
+            setTitle(item.getTitle());
+            fragment = new ProfileFragment();
         }
+
         if(fragment != null)
             fragmentManager.beginTransaction().replace(R.id.contentFragmentMenu ,fragment).commit();
 

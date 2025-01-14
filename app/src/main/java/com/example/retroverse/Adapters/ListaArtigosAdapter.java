@@ -37,6 +37,7 @@ public class ListaArtigosAdapter extends RecyclerView.Adapter<ListaArtigosAdapte
     public interface OnItemClickListener {
         void onItemClick(Artigo artigo, int position); // Passa o artigo e a posição
     }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
@@ -45,6 +46,7 @@ public class ListaArtigosAdapter extends RecyclerView.Adapter<ListaArtigosAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imgArtigoCard;
         TextView txtTamanhoCardArtigo, txtMarcaCard, txtPrecoArtigoCard;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgArtigoCard = (ImageView) itemView.findViewById(R.id.imgArtigoCard);

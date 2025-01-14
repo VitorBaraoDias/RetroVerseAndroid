@@ -28,6 +28,7 @@ public class Utils {
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return ni != null && ni.isConnected();
     }
+
     public static void displayError(VolleyError error, Context context) {
         if (error.networkResponse != null) {
             // Extrair o código de status HTTP

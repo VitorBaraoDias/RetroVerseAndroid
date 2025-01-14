@@ -5,6 +5,7 @@
         android:icon="@drawable/rounded_home_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:title="Home"
     />
     <item
         android:id="@+id/search2"
@@ -18,9 +19,10 @@
         android:title="oi"
         />
     <item
-        android:id="@+id/search4"
+        android:id="@+id/navProfile"
         android:icon="@drawable/rounded_contacts_product_24"
-        android:title="oi"
-
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Profile"
         />
 </menu>

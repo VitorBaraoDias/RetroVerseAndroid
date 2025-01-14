@@ -44,11 +44,10 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, List
         recyclerViewLatestPremiumDrops = view.findViewById(R.id.recyclerViewLatestPremiumDrops);
 
         // Inicializa o adaptador com a lista vazia
-
         Singleton.getInstance(getActivity()).setArtigosListener(this);
         Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getActivity()), null, null, null, null, null, getActivity());
 
-// Configura o listener de clique no adaptador não premium
+        // Configura o listener de clique no adaptador não premium
 
         return view;
     }

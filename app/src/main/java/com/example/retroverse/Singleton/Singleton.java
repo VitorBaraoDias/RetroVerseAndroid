@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Singleton {
-    public static final String baseUrl = "http://10.0.2.2/RetroVerse/backend/web/api/";
+    public static final String baseUrl = "http://10.0.2.2/defesa/RetroVerse/backend/web/api/";
 
 
     private static Singleton instance = null;
@@ -154,7 +154,7 @@ public class Singleton {
         }
         else {
             String url = baseUrl + "artigos/filtro?access-token=" + token;
-// Adicionando parâmetros à URL, se existirem
+        // Adicionando parâmetros à URL, se existirem
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
                 @Override
