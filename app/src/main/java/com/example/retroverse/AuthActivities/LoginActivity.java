@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.retroverse.Listeners.AuthListener;
 import com.example.retroverse.MainActivity;
+import com.example.retroverse.MenuActivity;
 import com.example.retroverse.Modals.Modal;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
+import com.example.retroverse.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity implements AuthListener {
@@ -62,6 +64,9 @@ public class LoginActivity extends AppCompatActivity implements AuthListener {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token);
         editor.apply();
+
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
 
     }
     // Método para mostrar o loading

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ArtigoActivities.ArtigoDetailsLojaActivity">
+    tools:context=".Activities.ArtigoDetailsLojaActivity">
 
     <!-- ConstraintLayout que contém todos os elementos da tela -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,7 +121,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/tvProfileDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -164,9 +164,9 @@
                 android:fontFamily="@font/roboto"
                 android:text="M"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView13"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toTopOf="@+id/textView13" />
+                app:layout_constraintBottom_toBottomOf="@+id/tvProfileDescription"
+                app:layout_constraintStart_toEndOf="@+id/tvProfileDescription"
+                app:layout_constraintTop_toTopOf="@+id/tvProfileDescription" />
 
             <TextView
                 android:id="@+id/txdDetailsMarcaLoja"
@@ -176,7 +176,7 @@
                 android:fontFamily="@font/roboto"
                 android:text="Corteiz"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView13"
+                app:layout_constraintBottom_toTopOf="@+id/tvProfileDescription"
                 app:layout_constraintStart_toEndOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -225,8 +225,8 @@
                 android:text="Description"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintStart_toStartOf="@+id/tvProfileDescription"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileDescription" />
 
             <Button
                 android:id="@+id/btnAddCartArtigoDetalhe"
@@ -267,7 +267,9 @@
                 android:id="@+id/recyclerViewRelatedItensLoja"
                 android:layout_width="0dp"
                 android:layout_height="240dp"
+                android:layout_marginStart="-20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="-20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />

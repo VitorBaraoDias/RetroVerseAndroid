@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:gravity="center"
+    app:cardBackgroundColor="@color/colorOnPrimary"
+    app:cardCornerRadius="26dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/txtMarcaArtigoCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="ADIDAS JACKET"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/imgArtigoCardCarrinho"
+            app:layout_constraintTop_toTopOf="@+id/imgArtigoCardCarrinho" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgArtigoCardCarrinho"
+            android:layout_width="90dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:minHeight="100dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtTipoArtigoCarrinho"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtTipoArtigoCarrinho"
+            app:layout_constraintVertical_bias="0.0"
+            app:shapeAppearanceOverlay="@style/RoundedCorners"
+            app:srcCompat="@drawable/image" />
+
+        <TextView
+            android:id="@+id/txtTipoArtigoCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="LOJA"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryVariant"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtTamanhoArtigoCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:text="M"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="@+id/txtMarcaArtigoCarrinho"
+            app:layout_constraintTop_toBottomOf="@+id/txtMarcaArtigoCarrinho" />
+
+        <TextView
+            android:id="@+id/txtCondicaoArtigoCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_light"
+            android:text="very good"
+            android:textAllCaps="true"
+            app:layout_constraintStart_toStartOf="@+id/txtMarcaArtigoCarrinho"
+            app:layout_constraintTop_toBottomOf="@+id/txtTamanhoArtigoCarrinho" />
+
+        <TextView
+            android:id="@+id/txtPrecoArtigoCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:text="35,00€"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgArtigoCardCarrinho"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtCondicaoArtigoCarrinho"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/imgCloseCardCarrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/txtTipoArtigoCarrinho"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtTipoArtigoCarrinho"
+            app:srcCompat="@drawable/rounded_close_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

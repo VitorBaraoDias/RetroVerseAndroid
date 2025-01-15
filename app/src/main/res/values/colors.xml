@@ -3,10 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorPrimary">#1E232C</color> <!-- Substitua pelo seu tom preferido -->
+    <color name="colorPrimary">#000000</color> <!-- Substitua pelo seu tom preferido -->
     <color name="colorPrimaryVariant">#0000FF</color>
     <color name="colorOnPrimary">#FFFFFF</color>
-
+    <color name="colorOnSurface">#1E232C</color>  <!-- Substitua pelo seu tom preferido -->
     <color name="backgroundColor">#F0F3F8</color>
 
 </resources>

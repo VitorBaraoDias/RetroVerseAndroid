@@ -101,21 +101,18 @@ public class Utils {
         return token;
     }
 
-
-
     ///artigos
-    public static ArrayList<Artigo> parseArtigosJson(String jsonResponse) {
-        // Criar uma instância de Gson
+    public static <T> ArrayList<T> parseJsonToList(String jsonResponse, Class<T> typeClass) {
         Gson gson = new Gson();
-
-        // Definir o tipo de retorno (uma ArrayList de Artigos)
-        Type tipoListaArtigos = new TypeToken<ArrayList<Artigo>>() {}.getType();
-
-        // Deserializar o JSON para o ArrayList de artigos
-        ArrayList<Artigo> artigos = gson.fromJson(jsonResponse, tipoListaArtigos);
-
-        return artigos;
+        Type listType = TypeToken.getParameterized(ArrayList.class, typeClass).getType();
+        return gson.fromJson(jsonResponse, listType);
     }
+
+    public static <T> T fromJson(String json, Class<T> type) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, type);
+    }
+
     ///
     public static String getToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);

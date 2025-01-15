@@ -44,7 +44,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewLastDrops" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewMyItems" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -70,7 +70,7 @@
             app:layout_constraintVertical_bias="0.666" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewLastDrops"
+            android:id="@+id/recyclerViewMyItems"
             android:layout_width="0dp"
             android:layout_height="240dp"
             android:scrollbars="horizontal"
@@ -91,7 +91,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/imgCartHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -100,6 +100,30 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/badge"
+            app:layout_constraintBottom_toBottomOf="@+id/imgCartHome"
+            app:layout_constraintEnd_toEndOf="@+id/imgCartHome"
+            app:layout_constraintStart_toStartOf="@+id/imgCartHome" />
+
+        <TextView
+            android:id="@+id/txtQuantCartHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintStart_toStartOf="@+id/imageView9"
+            app:layout_constraintTop_toTopOf="@+id/imageView9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

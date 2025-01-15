@@ -22,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         if(isTokenValid(this)){
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
+            finish();
         }
 
     }
@@ -39,13 +39,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public boolean isTokenValid(Context context) {
-        // Obtém as SharedPreferences com o nome "token"
         SharedPreferences sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);
 
-        // Tenta recuperar o token salvo
         String token = sharedPreferences.getString("token", null);
 
-        // Retorna true se o token existir e não for vazio, caso contrário, false
         return token != null && !token.isEmpty();
     }
 }
