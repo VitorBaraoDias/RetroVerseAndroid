@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
 import com.example.retroverse.Activities.ArtigoDetailsLojaActivity;
 import com.example.retroverse.Activities.CarrinhoActivity;
+import com.example.retroverse.ArtigoMarketPlaceDetailsActivity;
 import com.example.retroverse.Listeners.CartCountRefreshListener;
 import com.example.retroverse.Listeners.CartRefreshListener;
 import com.example.retroverse.Listeners.ListaArtigosListener;
@@ -104,9 +105,10 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, List
             intent.putExtra("ID",(int) artigo.getId());
             startActivity(intent);
         }
-        else {
-            Toast.makeText(getActivity(), "nao é tipo loja", Toast.LENGTH_SHORT).show();
-        }
+        else if(artigo.getTipoArtigo().equals("MARKETPLACE")){
+            Intent intent = new Intent(getContext(), ArtigoMarketPlaceDetailsActivity.class);
+            intent.putExtra("ID",(int) artigo.getId());
+            startActivity(intent);        }
     }
 
     @Override

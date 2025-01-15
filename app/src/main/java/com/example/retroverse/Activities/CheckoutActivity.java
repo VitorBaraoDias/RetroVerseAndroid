@@ -71,6 +71,7 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         Singleton.getInstance(this).getAllMetodoExpedicaoAPI(Utils.getToken(this), this);
 
         carrinho  = Singleton.getInstance(this).getCart();
+
         setAdapter(carrinho.getLinhasCarrinho());
 
 
@@ -163,10 +164,15 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
     }
 
     public void finishOrder(View view) {
-        if(validatePaymentMethod() && validateShippingMethod()){
+
+        if(validatePaymentMethod() && validateShippingMethod() && isFormValid()){
             Singleton.getInstance(this).addCheckoutAPI(Utils.getToken(this),
                     selectedIdMetodoExpedicao, selectedIdTipoPagamento, name, postalCode,
                     addres, country, city, this);
+        }
+        else {
+            Toast.makeText(this, "you need to fill in all the details", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -190,4 +196,13 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         finish();
 
     }
+
+    public boolean isFormValid() {
+        return name != null && !name.trim().isEmpty() &&
+                country != null && !country.trim().isEmpty() &&
+                city != null && !city.trim().isEmpty() &&
+                addres != null && !addres.trim().isEmpty() &&
+                postalCode != null && !postalCode.trim().isEmpty();
+    }
+
 }

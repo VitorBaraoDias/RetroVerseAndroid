@@ -356,10 +356,10 @@ public class Singleton {
                 @Override
                 public void onResponse(String response) {
 
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                    Log.d("venda", response);
                     Venda venda = Utils.fromJson(response, Venda.class);
                     if (cartCountRefreshListener != null && checkoutListener != null) {
-                        carrinho = null;
+                        carrinho.getLinhasCarrinho().clear();
                         cartCountRefreshListener.onRefreshCarrinho(carrinho);
                         checkoutListener.onOrderDetails(venda);
                     }
