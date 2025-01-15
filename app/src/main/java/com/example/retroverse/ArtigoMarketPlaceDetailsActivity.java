@@ -30,6 +30,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_artigo_market_place_details);
 
 
         recyclerViewRelatedItenS = findViewById(R.id.recyclerViewRelatedItensMarketplace);
@@ -49,7 +50,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity {
 
     }
     private void carregarArtigo(){
-        txtDetailsNomeMarketPlace.setText(artigo.getNome());
+        //txtDetailsNomeMarketPlace.setText(artigo.getNome());
         txtPrecoDetailsMarketplace.setText(artigo.getPrecoFormatado());
         txtCondicaoDetailsMarketplace.setText(artigo.getEstado());
         txdDetailsMarcaMarketplace.setText(artigo.getMarca());
