@@ -23,4 +23,11 @@
         android:title="oi"
 
         />
+
+    <item
+        android:id="@+id/favs"
+        android:icon="@drawable/heart"
+        android:title="oi"
+
+        />
 </menu>

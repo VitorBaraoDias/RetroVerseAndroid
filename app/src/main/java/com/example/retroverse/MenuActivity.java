@@ -3,18 +3,15 @@ package com.example.retroverse;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.retroverse.Fragments.HomeFragment;
+import com.example.retroverse.Fragments.ListaFavoritosFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +46,11 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
             setTitle(item.getTitle());
             fragment = new HomeFragment();
         }
+        if(item.getItemId() == R.id.favs) {
+            setTitle(item.getTitle());
+            fragment = new ListaFavoritosFragment();
+        }
+
         if(fragment != null)
             fragmentManager.beginTransaction().replace(R.id.contentFragmentMenu ,fragment).commit();
 
