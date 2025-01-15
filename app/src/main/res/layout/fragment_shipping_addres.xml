@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="20dp"
     tools:context=".Fragments.ShippingAddresFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -33,7 +34,6 @@
             android:layout_height="wrap_content"
             android:hint="XXXX-XXX"
             android:importantForAutofill="no"
-            android:inputType="number"
             android:maxLength="8" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="20dp"
         app:boxBackgroundColor="@color/backgroundColor"
         app:boxBackgroundMode="outline"
@@ -145,4 +145,40 @@
             android:layout_height="wrap_content"
             android:hint="City" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="SHIPPING DETAILS"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnCancelShippingDetails"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Cancel"
+        android:textColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toStartOf="@+id/btnConfimrShippingDetails"
+        app:layout_constraintTop_toBottomOf="@+id/txtPostalCodeLayout" />
+
+    <Button
+        android:id="@+id/btnConfimrShippingDetails"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Confirm"
+        android:textColor="@color/colorPrimaryVariant"
+        app:layout_constraintEnd_toEndOf="@+id/txtPostalCodeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/txtPostalCodeLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

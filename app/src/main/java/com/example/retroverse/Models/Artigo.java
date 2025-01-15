@@ -25,6 +25,7 @@ public class Artigo {
     private List<String> fotos;
     private boolean premium = false;
     private boolean isLiked = false;
+    private String estadoencomenda;
     private final String baseUrl = "http://10.0.2.2/RetroVerse/frontend/web/uploads/img-artigos/";
 
     // Getters e Setters (pode usar o Lombok para gerar isso automaticamente)
