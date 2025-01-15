@@ -1,3 +1,4 @@
+
 package com.example.retroverse.Activities;
 
 import android.content.Intent;
@@ -94,4 +95,9 @@ public class CarrinhoActivity extends AppCompatActivity implements CarrinhoAdapt
         carregarPreco();
     }
 
+    public void openCheckoutActivity(View view) {
+        Intent intent = new Intent(this, CheckoutActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

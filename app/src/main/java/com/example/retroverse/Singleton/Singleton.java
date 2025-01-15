@@ -19,6 +19,7 @@ import com.example.retroverse.Listeners.CartRefreshListener;
 import com.example.retroverse.Listeners.CheckoutListener;
 import com.example.retroverse.Listeners.ListaArtigosListener;
 import com.example.retroverse.Listeners.ListaFavoritosListener;
+import com.example.retroverse.Listeners.PerfilRefreshListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.Models.Favorito;
@@ -26,7 +27,9 @@ import com.example.retroverse.Listeners.MetodoExpedicaoListener;
 import com.example.retroverse.Listeners.TipoPagamentoListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
+import com.example.retroverse.Listeners.CheckoutListener;
 import com.example.retroverse.Models.Metodoexpedicao;
+import com.example.retroverse.Models.Perfil;
 import com.example.retroverse.Models.Tipopagamento;
 import com.example.retroverse.Models.Venda;
 import com.example.retroverse.Utils;
@@ -37,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Singleton {
-    public static final String baseUrl = "http://10.0.2.2/RetroVerse/backend/web/api/";
+    public static final String baseUrl = "http://10.0.2.2/defesa-2/RetroVerse/backend/web/api/";
 
 
     private static Singleton instance = null;
@@ -49,14 +52,17 @@ public class Singleton {
     private CartListener cartListener;
     private CartRefreshListener cartRefreshListener;
     private CartCountRefreshListener cartCountRefreshListener;
-    private TipoPagamentoListener tipoPagamentoListener;
-    private MetodoExpedicaoListener metodoExpedicaoListener;
-    private CheckoutListener checkoutListener;
+    private PerfilRefreshListener perfilRefreshListener;
     private ArrayList<Artigo> artigos = new ArrayList<>();
     private Favorito favorito;
     private ArrayList<Tipopagamento> tipopagamentos = new ArrayList<>();
     private ArrayList<Metodoexpedicao> metodoexpedicaos = new ArrayList<>();
     private Carrinho carrinho;
+    private Perfil perfil;
+    private TipoPagamentoListener tipoPagamentoListener;
+    private MetodoExpedicaoListener metodoExpedicaoListener;
+    private CheckoutListener checkoutListener;
+
     public static synchronized Singleton getInstance(Context context) {
         if (instance == null) {
             instance = new Singleton(context);
@@ -64,6 +70,8 @@ public class Singleton {
         }
         return instance;
     }
+
+
     private Singleton(Context context){
         artigos = new ArrayList<>();
         carrinho = new Carrinho();
@@ -73,6 +81,11 @@ public class Singleton {
     public void setLoginListener(AuthListener listener) {
         this.loginListener = listener;
     }
+
+    public void setPerfilRefreshListener(PerfilRefreshListener listener) {
+        this.perfilRefreshListener = listener;
+    }
+
     public void setCreatAccountListener(AuthCreatAccountListener listener) {
         this.authCreatAccountListener = listener;
     }
@@ -287,7 +300,7 @@ public class Singleton {
         }
         else {
             String url = baseUrl + "carrinhos?access-token=" + token;
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
                 @Override
                 public void onResponse(String response) {
@@ -407,6 +420,42 @@ public class Singleton {
         }
     }
 
+
+    //PERFIL API
+    public void getPerfilAPI(String token, Context context) {
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "perfils?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta perfil", response);
+
+                    perfil = Utils.fromJson(response, Perfil.class);
+
+                    if (perfilRefreshListener != null) {
+                        perfilRefreshListener.onRefreshPerfil(perfil);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000, // Tempo de timeout em milissegundos (15 segundos)
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
 
 
 
