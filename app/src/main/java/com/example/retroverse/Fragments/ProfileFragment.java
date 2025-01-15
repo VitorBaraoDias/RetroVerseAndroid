@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +31,12 @@ import com.example.retroverse.Utils;
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment implements PerfilRefreshListener, ListaArtigosAdapter.OnItemClickListener {
+public class ProfileFragment extends Fragment implements PerfilRefreshListener, ListaArtigosAdapter.OnItemClickListener, EditProfileFragment.OnProfileEditListener {
 
     private View rootView;
-    private TextView tvUsername, tvDescricao, tvSaldo, tvSaldoPendente;
+    private TextView tvUsername, tvDescricao, tvSaldo, tvSaldoPendente, tvAvaliacoesCount;
     private ImageView ivFotoPerfil;
+    private RatingBar ratingBar;
     RecyclerView recyclerView;
     ListaArtigosAdapter listaArtigosAdapter;
 
@@ -47,11 +49,22 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
 
         tvUsername = rootView.findViewById(R.id.tvProfileUsername);
         tvDescricao = rootView.findViewById(R.id.tvProfileDescription);
+        tvAvaliacoesCount = rootView.findViewById(R.id.tvQuantidadeAvaliacoes);
+        ratingBar = rootView.findViewById(R.id.profileRatingBar);
         ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
         recyclerView = rootView.findViewById(R.id.recyclerViewMyItems);
 
         Singleton.getInstance(getActivity()).setPerfilRefreshListener(this);
         Singleton.getInstance(getActivity()).getPerfilAPI(Utils.getToken(getActivity()), getActivity());
+
+        // Botão para abrir o EditProfileDialogFragment
+        ImageView btnEditProfile = rootView.findViewById(R.id.btnEditProfile); // Certifique-se de que o ID está correto
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEditProfileDialog();
+            }
+        });
 
         return rootView;
     }
@@ -64,11 +77,26 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
             tvDescricao.setText(perfil.getDescricao() != null ? perfil.getDescricao() : "Descrição não disponível");
             tvUsername.setText(perfil.getUsername() != null ? perfil.getUsername() : "Username não disponível");
 
+            int quantidadeAvaliacoes = perfil.getQuantidadeAvaliacoes();
+            String avaliacoesText;
+
+            if (quantidadeAvaliacoes == 0) {
+                avaliacoesText = "No reviews";
+            } else {
+                avaliacoesText = quantidadeAvaliacoes + " Reviews";
+            }
+
+            tvAvaliacoesCount.setText(avaliacoesText);
+
+            float mediaAvaliacoes = perfil.getMediaAvaliacoes();
+
+            ratingBar.setRating(mediaAvaliacoes);
+
             String fotoperfilUrl = perfil.getFotoperfil();
 
                 Glide.with(this)
                         .load(fotoperfilUrl)
-                        .placeholder(R.drawable.profile_default_image)  // Imagem padrão
+                        .placeholder(R.drawable.profile_default_image)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivFotoPerfil);
             setAdapter(perfil.getArtigosPublicados());
@@ -105,4 +133,13 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
         }*/
     }
 
+    public void openEditProfileDialog() {
+        EditProfileFragment editProfileDialogFragment = new EditProfileFragment();
+        editProfileDialogFragment.show(getParentFragmentManager(), "EDIT_PROFILE_DIALOG");
+    }
+
+    @Override
+    public void onProfileEdited(String descricao, String localizacao, String fotoUrl) {
+        Toast.makeText(getContext(), "Perfil atualizado: ", Toast.LENGTH_SHORT).show();
+    }
 }

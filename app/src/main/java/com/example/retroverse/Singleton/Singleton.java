@@ -91,19 +91,19 @@ public class Singleton {
         }
         else {
             // Volley RequestQueue para enviar requisição HTTP
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, baseUrl + "users/login", new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, baseUrl + "users/login", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
 
-                        Log.d("resposta", response );
+                    Log.d("resposta", response );
 
-                        String token = Utils.parserJsonLogin(response);
-                        if (loginListener != null) {
-                            loginListener.onValidateLogin(token, context);
-                        }
+                    String token = Utils.parserJsonLogin(response);
+                    if (loginListener != null) {
+                        loginListener.onValidateLogin(token, context);
                     }
                 }
-            , new Response.ErrorListener() {
+            }
+                    , new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Utils.displayError(error, context);

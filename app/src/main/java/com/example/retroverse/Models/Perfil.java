@@ -10,15 +10,19 @@ public class Perfil {
     private String username;
     private String caminhofotoperfil;
     private String morada;
-    private int saldo;
-    private int saldopendente;
+    private double saldo;
+    private double saldopendente;
     private int banido;
+    private int quantidadeAvaliacoes;
+    private float mediaAvaliacoes;
 
     @SerializedName("artigospublicados")
     private ArrayList<Artigo> artigosPublicados;
 
     @SerializedName("artigosvendidos")
     private ArrayList<Artigo> artigosVendidos;
+
+
 
     private final String baseUrl = "http://10.0.2.2/defesa-2/RetroVerse/frontend/web/uploads/img-profile/";
 
@@ -57,7 +61,7 @@ public class Perfil {
         this.morada = morada;
     }
 
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
@@ -65,7 +69,7 @@ public class Perfil {
         this.saldo = saldo;
     }
 
-    public int getSaldopendente() {
+    public double getSaldopendente() {
         return saldopendente;
     }
 
@@ -79,6 +83,22 @@ public class Perfil {
 
     public void setBanido(int banido) {
         this.banido = banido;
+    }
+
+    public int getQuantidadeAvaliacoes() {
+        return quantidadeAvaliacoes;
+    }
+
+    public void setQuantidadeAvaliacoes(int quantidadeAvaliacoes) {
+        this.quantidadeAvaliacoes = quantidadeAvaliacoes;
+    }
+
+    public float getMediaAvaliacoes() {
+        return mediaAvaliacoes;
+    }
+
+    public void setMediaAvaliacoes(float mediaAvaliacoes) {
+        this.mediaAvaliacoes = mediaAvaliacoes;
     }
 
     public ArrayList<Artigo> getArtigosPublicados() {

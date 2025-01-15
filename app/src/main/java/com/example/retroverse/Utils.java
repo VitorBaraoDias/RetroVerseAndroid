@@ -56,6 +56,7 @@ public class Utils {
     private static String getErrorMessage(int statusCode, JSONObject jsonResponse) {
         String errorMessage = "Erro desconhecido";
 
+        Log.d("erros", String.valueOf(jsonResponse));
         // Verifica se existe a chave "message" no JSON
         if (jsonResponse.has("message")) {
             errorMessage = jsonResponse.optString("message", errorMessage);
