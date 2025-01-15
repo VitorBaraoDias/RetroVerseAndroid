@@ -48,5 +48,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item> <!-- Ajuste o valor conforme necessário -->
     </style>
+    <style name="fullCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item> <!-- Ajuste o valor conforme necessário -->
+    </style>
 
 </resources>

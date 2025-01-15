@@ -2,11 +2,12 @@ package com.example.retroverse.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
 
-public class Artigo {
+public class Artigo implements Serializable {
     private int id;
     @SerializedName("datacriacao")
     private String dataCriacao;
