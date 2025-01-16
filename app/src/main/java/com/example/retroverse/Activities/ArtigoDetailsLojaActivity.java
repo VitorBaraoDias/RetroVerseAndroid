@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
+import com.example.retroverse.ArtigoMarketPlaceDetailsActivity;
 import com.example.retroverse.Listeners.CartListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
@@ -95,10 +96,20 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
     }
     @Override
     public void onItemClick(Artigo artigo, int position) {
-        Intent intent = new Intent(this, ArtigoDetailsLojaActivity.class);
-        intent.putExtra("ID", artigo.getId());
-        startActivity(intent);
+
+
+        if(artigo.getTipoArtigo().equals("LOJA")){
+            Intent intent = new Intent(this, ArtigoDetailsLojaActivity.class);
+            intent.putExtra("ID",(int) artigo.getId());
+            startActivity(intent);
+        }
+        else if(artigo.getTipoArtigo().equals("MARKETPLACE")){
+            Intent intent = new Intent(this, ArtigoMarketPlaceDetailsActivity.class);
+            intent.putExtra("ID",(int) artigo.getId());
+            startActivity(intent);
+        }
         finish();
+
     }
     @Override
     public void onAddCarrinho(Carrinho carrinho) {
