@@ -15,15 +15,11 @@ public class Perfil {
     private int banido;
     private int quantidadeAvaliacoes;
     private float mediaAvaliacoes;
-
     @SerializedName("artigospublicados")
     private ArrayList<Artigo> artigosPublicados;
 
     @SerializedName("artigosvendidos")
     private ArrayList<Artigo> artigosVendidos;
-
-
-
     private final String baseUrl = "http://10.0.2.2/defesa-2/RetroVerse/frontend/web/uploads/img-profile/";
 
 

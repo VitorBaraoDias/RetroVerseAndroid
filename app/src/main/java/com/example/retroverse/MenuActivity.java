@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.retroverse.Fragments.HomeFragment;
+import com.example.retroverse.Fragments.ListaFavoritosFragment;
 import com.example.retroverse.Fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,7 +50,11 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
         if(item.getItemId() == R.id.navHome) {
             setTitle(item.getTitle());
             fragment = new HomeFragment();
-        }  else if(item.getItemId() == R.id.navProfile) {
+        }
+        else if(item.getItemId() == R.id.navHeart) {
+            setTitle(item.getTitle());
+            fragment = new ListaFavoritosFragment();
+        }else if(item.getItemId() == R.id.navProfile) {
             setTitle(item.getTitle());
             fragment = new ProfileFragment();
         }

@@ -24,7 +24,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity {
     ListaArtigosAdapter listaArtigosAdapter;
     Artigo artigo;
 
-    ImageView imgPrimeiraImagemDetalhesMarketplace;
+    ImageView imgPrimeiraImagemDetalhesMarketplace, imgPerfilMarketplace;
     TextView txtDetailsNomeMarketPlace, txdDetailsMarcaMarketplace, txtPrecoDetailsMarketplace, txtCondicaoDetailsMarketplace, txtDetailsSizeMarketplace, txtDetailsDescricaoMarketplace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity {
         txtDetailsSizeMarketplace = findViewById(R.id.txtDetailsSizeMarketplace);
         txtDetailsDescricaoMarketplace = findViewById(R.id.txtDetailsDescricaoMartkeplace);
         imgPrimeiraImagemDetalhesMarketplace = findViewById(R.id.imgPrimeiraImagemDetalhesMarketplace);
+        imgPerfilMarketplace = findViewById(R.id.imgPerfilMarketplace);
 
 
         int id = getIntent().getIntExtra("ID", 0);
@@ -57,6 +58,11 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity {
         txtDetailsSizeMarketplace.setText(artigo.getTamanho());
         txtDetailsDescricaoMarketplace.setText(artigo.getDescricao());
 
+        Glide.with(this)
+                .load(artigo.getPerfil().getFotoperfil())
+                .placeholder(R.drawable.image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imgPerfilMarketplace);
         Glide.with(this)
                 .load(artigo.getPrimeiraFotoUrl())
                 .placeholder(R.drawable.image)

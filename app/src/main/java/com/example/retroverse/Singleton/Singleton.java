@@ -33,6 +33,7 @@ import com.example.retroverse.Models.Perfil;
 import com.example.retroverse.Models.Tipopagamento;
 import com.example.retroverse.Models.Venda;
 import com.example.retroverse.Utils;
+import com.example.retroverse.bd.DBHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Singleton {
-    public static final String baseUrl = "http://10.0.2.2/defesa-2/RetroVerse/backend/web/api/";
+    public static final String baseUrl = "http://10.0.2.2/RetroVerse/backend/web/api/";
 
 
     private static Singleton instance = null;
@@ -54,7 +55,7 @@ public class Singleton {
     private CartCountRefreshListener cartCountRefreshListener;
     private PerfilRefreshListener perfilRefreshListener;
     private ArrayList<Artigo> artigos = new ArrayList<>();
-    private Favorito favorito;
+    private ArrayList<Artigo> favoritos = new ArrayList<>();
     private ArrayList<Tipopagamento> tipopagamentos = new ArrayList<>();
     private ArrayList<Metodoexpedicao> metodoexpedicaos = new ArrayList<>();
     private Carrinho carrinho;
@@ -62,6 +63,9 @@ public class Singleton {
     private TipoPagamentoListener tipoPagamentoListener;
     private MetodoExpedicaoListener metodoExpedicaoListener;
     private CheckoutListener checkoutListener;
+
+    private DBHelper dbHelper = null;
+
 
     public static synchronized Singleton getInstance(Context context) {
         if (instance == null) {
@@ -75,6 +79,8 @@ public class Singleton {
     private Singleton(Context context){
         artigos = new ArrayList<>();
         carrinho = new Carrinho();
+        dbHelper = new DBHelper(context);
+
     }
 
     //listeners
@@ -117,6 +123,16 @@ public class Singleton {
         this.checkoutListener = listener;
     }
     //listeners
+
+    public void adicionarArtigosBD(ArrayList<Artigo> artigos){
+        //apagar todos os livros e adicionar os livros atuais
+        dbHelper.removerAllArtigosBD();
+        for(Artigo l:favoritos)
+            adicionarArtigoBD(l);
+    }
+    public void adicionarArtigoBD(Artigo artigo){
+        dbHelper.adicionarFavoritoArtigo(artigo);
+    }
 
 
     /// USER
@@ -531,7 +547,48 @@ public class Singleton {
 
     ///Metodo pagamento API
 
+    public void getFavoritosAPI(String token, final Context context) {
+        if (!Utils.isConnectionInternet(context)) {
+            Toast.makeText(context, "No Internet connection, local favourites have been loaded", Toast.LENGTH_LONG).show();
+            favoritos = dbHelper.getTodosFavoritos(Utils.getToken(context));
 
+            if (listaFavoritosListener != null) {
+                listaFavoritosListener.onRefreshListaFavoritos(favoritos);
+            }
+        } else {
+            String url = baseUrl + "favoritos?access-token=" + token;
+
+            // Requisição GET
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d(" Favoritos", response);
+
+                    favoritos = Utils.parseJsonToList(response, Artigo.class);
+                    adicionarArtigosBD(favoritos);
+
+
+                    if (listaFavoritosListener != null) {
+                        listaFavoritosListener.onRefreshListaFavoritos(favoritos);
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000, // Tempo de timeout em milissegundos (15 segundos)
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
+            ));
+
+            volleyQueue.add(stringRequest);
+        }
+    }
 
     /// Functions ITEMS
     public ArrayList<Artigo> getArtigos(){
@@ -584,41 +641,6 @@ public class Singleton {
 
 
     /// FAVORITOS
-    public void getFavoritosByIdPerfilAPI(String token, final Context context) {
-        if (!Utils.isConnectionInternet(context)) {
-            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
-        } else {
-            String url = baseUrl + "favoritos?access-token=" + token;
-
-            // Requisição GET
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d(" Favoritos", response);
-
-                    favorito = Utils.fromJson(response, Favorito.class);
-
-                    if (listaFavoritosListener != null) {
-                        listaFavoritosListener.onRefreshListaFavoritos(favorito);
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Utils.displayError(error, context);
-                }
-            });
-
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    15000, // Tempo de timeout em milissegundos (15 segundos)
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
-            ));
-
-            volleyQueue.add(stringRequest);
-        }
-    }
 
 
     ///FAVORITOS

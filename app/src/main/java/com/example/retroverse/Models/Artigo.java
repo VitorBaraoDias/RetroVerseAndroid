@@ -26,6 +26,7 @@ public class Artigo implements Serializable {
     private List<String> fotos;
     private boolean premium = false;
     private boolean isLiked = false;
+    private Perfil perfil;
     private final String baseUrl = "http://10.0.2.2/RetroVerse/frontend/web/uploads/img-artigos/";
 
     // Getters e Setters (pode usar o Lombok para gerar isso automaticamente)
@@ -55,6 +56,14 @@ public class Artigo implements Serializable {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     public void setDescricao(String descricao) {
