@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.retroverse.Fragments.EditProfileFragment;
 import com.example.retroverse.Listeners.AuthCreatAccountListener;
 import com.example.retroverse.Listeners.AuthListener;
 import com.example.retroverse.Listeners.CartCountRefreshListener;
@@ -25,9 +26,6 @@ import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.Models.Favorito;
 import com.example.retroverse.Listeners.MetodoExpedicaoListener;
 import com.example.retroverse.Listeners.TipoPagamentoListener;
-import com.example.retroverse.Models.Artigo;
-import com.example.retroverse.Models.Carrinho;
-import com.example.retroverse.Listeners.CheckoutListener;
 import com.example.retroverse.Models.Metodoexpedicao;
 import com.example.retroverse.Models.Perfil;
 import com.example.retroverse.Models.Tipopagamento;
@@ -36,7 +34,6 @@ import com.example.retroverse.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Singleton {
@@ -457,6 +454,50 @@ public class Singleton {
         }
     }
 
+    public void putPerfilAPI(String token, Context context, String descricao, String morada){
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "perfils/editar?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    Log.d("perfil", response);
+
+                    Perfil perfil = Utils.fromJson(response, Perfil.class);
+                    if (perfilRefreshListener != null) {
+                        perfilRefreshListener.onRefreshPerfil(perfil);
+                    }
+
+                }
+            }
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("descricao", String.valueOf(descricao));
+                    params.put("morada", String.valueOf(morada));
+                    return params;
+                }
+            };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    //PERFIL API
 
 
     ///Metodo pagamento API
@@ -640,5 +681,10 @@ public class Singleton {
     public Metodoexpedicao getMetodoExpedicaoByPosition(int position){
         return metodoexpedicaos.get(position);
     }
-    /// Functions CARTS
+
+
+    //RETORNAR O PERFIL DO USER
+    public Perfil getPerfil() {
+        return perfil;
+    }
 }

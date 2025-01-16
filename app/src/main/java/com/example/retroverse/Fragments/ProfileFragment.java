@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment implements PerfilRefreshListener, ListaArtigosAdapter.OnItemClickListener, EditProfileFragment.OnProfileEditListener {
 
     private View rootView;
-    private TextView tvUsername, tvDescricao, tvSaldo, tvSaldoPendente, tvAvaliacoesCount;
+    private TextView tvUsername, tvDescricao, tvAvaliacoesCount, tvLocalizacao;
     private ImageView ivFotoPerfil;
     private RatingBar ratingBar;
     RecyclerView recyclerView;
@@ -49,6 +49,7 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
 
         tvUsername = rootView.findViewById(R.id.tvProfileUsername);
         tvDescricao = rootView.findViewById(R.id.tvProfileDescription);
+        tvLocalizacao = rootView.findViewById(R.id.tvProfileLocation);
         tvAvaliacoesCount = rootView.findViewById(R.id.tvQuantidadeAvaliacoes);
         ratingBar = rootView.findViewById(R.id.profileRatingBar);
         ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
@@ -76,6 +77,7 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
             // Atualizar os campos de texto
             tvDescricao.setText(perfil.getDescricao() != null ? perfil.getDescricao() : "Descrição não disponível");
             tvUsername.setText(perfil.getUsername() != null ? perfil.getUsername() : "Username não disponível");
+            tvLocalizacao.setText(perfil.getMorada() != null ? perfil.getMorada() : "Localizacao não disponível");
 
             int quantidadeAvaliacoes = perfil.getQuantidadeAvaliacoes();
             String avaliacoesText;
@@ -134,9 +136,17 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
     }
 
     public void openEditProfileDialog() {
-        EditProfileFragment editProfileDialogFragment = new EditProfileFragment();
+        String descricao = tvDescricao.getText().toString();
+        String localizacao = tvLocalizacao.getText().toString();
+        String fotoUrl = Singleton.getInstance(getContext()).getPerfil().getFotoperfil();
+
+
+        EditProfileFragment editProfileDialogFragment = EditProfileFragment.newInstance(descricao, localizacao, fotoUrl);
+
+        editProfileDialogFragment.setTargetFragment(this, 0); // Define o fragmento atual como alvo
         editProfileDialogFragment.show(getParentFragmentManager(), "EDIT_PROFILE_DIALOG");
     }
+
 
     @Override
     public void onProfileEdited(String descricao, String localizacao, String fotoUrl) {

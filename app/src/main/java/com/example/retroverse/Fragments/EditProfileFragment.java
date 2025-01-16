@@ -2,7 +2,9 @@ package com.example.retroverse.Fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +20,28 @@ import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.retroverse.R;
+import com.example.retroverse.Singleton.Singleton;
+import com.example.retroverse.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class EditProfileFragment extends DialogFragment {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
     private View rootView;
     private TextInputEditText etDescricao, etLocalizacao;
-    private Button btnCancelar, btnConfirmar;
-    private ImageView ivFotoPerfil;
+    private Button btnConfirmar;
+    private ImageView ivFotoPerfil, btnEditarFoto;
 
+
+    public static EditProfileFragment newInstance(String descricao, String localizacao, String fotoUrl) {
+        EditProfileFragment fragment = new EditProfileFragment();
+        Bundle args = new Bundle();
+        args.putString("descricao", descricao);
+        args.putString("localizacao", localizacao);
+        args.putString("fotoUrl", fotoUrl);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public interface OnProfileEditListener {
         void onProfileEdited(String descricao, String localizacao, String fotoUrl);
@@ -38,10 +53,9 @@ public class EditProfileFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            // Verifica se a atividade implementa a interface
-            mListener = (EditProfileFragment.OnProfileEditListener) getParentFragment();
+            mListener = (EditProfileFragment.OnProfileEditListener) getTargetFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnProfileEditListener");
+            throw new ClassCastException(getTargetFragment().toString() + " must implement OnProfileEditListener");
         }
     }
 
@@ -52,34 +66,47 @@ public class EditProfileFragment extends DialogFragment {
 
         rootView = inflater.inflate(R.layout.dialog_edit_profile, container, false);
         etDescricao = rootView.findViewById(R.id.etProfileDescription);
+        etLocalizacao = rootView.findViewById(R.id.etProfileLocation);
         ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
         btnConfirmar = rootView.findViewById(R.id.btnSavePerfil);
+        btnEditarFoto = rootView.findViewById(R.id.btnEditProfilePicture);
 
-        etDescricao.setText("Atual Descrição");
+        if (getArguments() != null) {
+            String descricao = getArguments().getString("descricao", "");
+            String localizacao = getArguments().getString("localizacao", "");
+            String fotoUrl = getArguments().getString("fotoUrl", "");
 
-        Glide.with(this)
-                .load("URL_da_foto_atual")
-                .placeholder(R.drawable.profile_default_image)
-                .into(ivFotoPerfil);
+            etDescricao.setText(descricao);
+            etLocalizacao.setText(localizacao);
 
+            Glide.with(this)
+                    .load(fotoUrl)
+                    .placeholder(R.drawable.profile_default_image)
+                    .into(ivFotoPerfil);
+        }
 
-        // Botão de confirmar
-        btnConfirmar.setOnClickListener(v -> {
-            if (validateFields()) {
-                // Coletar os dados editados
-                String descricao = etDescricao.getText().toString().trim();
-                String localizacao = etLocalizacao.getText().toString().trim();
-
-                // Aqui você pode definir a URL da foto de perfil ou outro valor
-                String fotoUrl = "nova_url_foto";
-
-                // Notificar o fragmento ou atividade de que os dados foram editados
-                mListener.onProfileEdited(descricao, localizacao, fotoUrl);
-                dismiss();
+        btnEditarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGallery();
             }
         });
 
+        btnConfirmar.setOnClickListener(v -> {
+            if (validateFields()) {
+                    Singleton.getInstance(getActivity()).putPerfilAPI(Utils.getToken(getActivity()), getActivity(), etDescricao.getText().toString(),etLocalizacao.getText().toString());
+                    dismiss();
+                }
+        });
+
         return rootView;
+    }
+
+    //ver o que é o pick image request
+    public void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     @Override
