@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -17,9 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
 import com.example.retroverse.Activities.ArtigoDetailsLojaActivity;
 import com.example.retroverse.Activities.CarrinhoActivity;
-import com.example.retroverse.ArtigoMarketPlaceDetailsActivity;
+import com.example.retroverse.Activities.ArtigoMarketPlaceDetailsActivity;
 import com.example.retroverse.Listeners.CartCountRefreshListener;
 import com.example.retroverse.Listeners.ListaArtigosListener;
+import com.example.retroverse.Listeners.RefreshArtigosListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
@@ -27,13 +27,16 @@ import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Utils;
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements ListaArtigosListener, ListaArtigosAdapter.OnItemClickListener, CartCountRefreshListener {
+public class HomeFragment extends Fragment implements ListaArtigosListener, RefreshArtigosListener, ListaArtigosAdapter.OnItemClickListener, ListaArtigosAdapter.OnItemLikeClickListener, CartCountRefreshListener {
 
     View view;
     RecyclerView recyclerView, recyclerViewLatestPremiumDrops;
     TextView txtQuantCartHome;
     ImageView imgCartHome;
     private ListaArtigosAdapter listaArtigosAdapter, listaArtigosAdapterPremium;
+
+    ArrayList<Artigo> listaArtigos, listaArtigoPremium;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +52,7 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, List
 
         // Inicializa o adaptador com a lista vazia
         Singleton.getInstance(getActivity()).setArtigosListener(this);
+        Singleton.getInstance(getActivity()).setArtigosRefreshListener(this);
         Singleton.getInstance(getActivity()).setCartCountRefreshListener(this);
 
         // Configura o listener de clique no adaptador não premium
@@ -64,36 +68,46 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, List
         return view;
     }
 
-    @Override
-    public void onRefreshListaArtigos(ArrayList<Artigo> listaArtigos) {
-        if (listaArtigos != null) {
-            setAdapter(Singleton.getInstance(getActivity()).filterPremiumArticles(), Singleton.getInstance(getActivity()).filterNonPremiumArticles(0));
-        }
+    public void openCartActivity(View view) {
+        Intent intent = new Intent(getContext(), CarrinhoActivity.class);
+        startActivity(intent);
     }
-    private void setAdapter(ArrayList<Artigo> artigosPremium, ArrayList<Artigo> artigosNaoPremium) {
-        if (listaArtigosAdapter == null) {
 
-            listaArtigosAdapter = new ListaArtigosAdapter(artigosNaoPremium, getActivity());
-            listaArtigosAdapterPremium = new ListaArtigosAdapter(artigosPremium, getActivity());
+    private void setAdapter() {
+        if (listaArtigosAdapter != null && listaArtigosAdapterPremium != null) {
+            listaArtigosAdapter.updateData(this.listaArtigos);
+            listaArtigosAdapterPremium.updateData(this.listaArtigoPremium);
+            listaArtigosAdapter.notifyDataSetChanged();
+            listaArtigosAdapterPremium.notifyDataSetChanged();
+        } else {
+            // Criação do adaptador (primeira inicialização)
+            listaArtigosAdapter = new ListaArtigosAdapter(this.listaArtigos, getActivity(), true);
+            listaArtigosAdapterPremium = new ListaArtigosAdapter(this.listaArtigoPremium, getActivity(), true);
 
             listaArtigosAdapter.setOnItemClickListener(this);
+            listaArtigosAdapter.setOnItemLikeClickListener(this);
 
-            ///normal
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(listaArtigosAdapter);
 
-            ///normal
 
-            ///premium
+            listaArtigosAdapterPremium.setOnItemLikeClickListener(this);
+
+
             recyclerViewLatestPremiumDrops.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
             recyclerViewLatestPremiumDrops.setItemAnimator(new DefaultItemAnimator());
             recyclerViewLatestPremiumDrops.setAdapter(listaArtigosAdapterPremium);
-            ///premium
+        }
 
-        } else {
-            listaArtigosAdapter.notifyDataSetChanged();
-            listaArtigosAdapterPremium.notifyDataSetChanged();
+    }
+    @Override
+    public void onGetListaArtigos(ArrayList<Artigo> listaArtigos) {
+        if (listaArtigos != null) {
+            this.listaArtigos = Singleton.getInstance(getActivity()).filterNonPremiumArticles(0);
+            this.listaArtigoPremium = Singleton.getInstance(getActivity()).filterPremiumArticles();
+
+            setAdapter();
         }
     }
     @Override
@@ -109,14 +123,26 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, List
             intent.putExtra("ID",(int) artigo.getId());
             startActivity(intent);        }
     }
-
     @Override
     public void onRefreshCarrinho(Carrinho carrinho) {
+
         txtQuantCartHome.setText(String.valueOf(carrinho.getLinhasCarrinho().size()));
     }
+    @Override
+    public void onItemLikeClick(Artigo artigo, int position) {
 
-    public void openCartActivity(View view) {
-        Intent intent = new Intent(getContext(), CarrinhoActivity.class);
-        startActivity(intent);
+        if(artigo.isLiked()){ //SE FOR TRUE IRA ELIMINAR O FAVORITO
+            Singleton.getInstance(getActivity()).removeFavoritoAPI(Utils.getToken(getActivity()), artigo, getActivity());
+
+        }
+        else{
+            Singleton.getInstance(getActivity()).addFavoritoAPI(Utils.getToken(getActivity()), artigo.getId(), getActivity());
+        }
+    }
+
+    @Override
+    public void onRefreshListaArtigos() {
+        Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getActivity()), null, null, null, null, null, getActivity());
+
     }
 }

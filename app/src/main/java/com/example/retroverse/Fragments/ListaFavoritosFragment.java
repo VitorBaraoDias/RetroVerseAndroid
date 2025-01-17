@@ -11,7 +11,6 @@
     import android.view.ViewGroup;
 
     import com.example.retroverse.Adapters.ListaArtigosAdapter;
-    import com.example.retroverse.Adapters.ListaFavoritosAdapter;
     import com.example.retroverse.Listeners.ListaFavoritosListener;
     import com.example.retroverse.Models.Artigo;
     import com.example.retroverse.R;
@@ -35,10 +34,6 @@
 
             recyclerViewFavoritos = view.findViewById(R.id.recyclerViewFavoritos);
 
-            recyclerViewFavoritos.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerViewFavoritos.setItemAnimator(new DefaultItemAnimator());
-
-
             //FavoritoDBHelper dbHelper = new FavoritoDBHelper(getContext());
 
             //listaFavoritosAdapter = new ListaFavoritosAdapter(favoritoList, getContext());
@@ -60,7 +55,7 @@
         private void setAdapter(ArrayList<Artigo> artigos) {
             if (listaFavoritosAdapter == null) {
 
-                listaFavoritosAdapter = new ListaArtigosAdapter(artigos, getActivity());
+                listaFavoritosAdapter = new ListaArtigosAdapter(artigos, getActivity(), true);
 
                 recyclerViewFavoritos.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
                 recyclerViewFavoritos.setItemAnimator(new DefaultItemAnimator());

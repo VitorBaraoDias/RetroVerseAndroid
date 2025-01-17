@@ -19,8 +19,9 @@
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="64dp"
             android:rotationY="-180"
+            android:onClick="finishaActivity"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/rounded_arrow_right_alt_24" />

@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ArtigoMarketPlaceDetailsActivity"
+            android:name=".Activities.ArtigoMarketPlaceDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.OrderDetailsActivity"

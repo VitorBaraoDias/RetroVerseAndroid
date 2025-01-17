@@ -56,7 +56,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private void setAdapter(ArrayList<Artigo> artigos) {
         if (listaArtigosAdapter == null) {
 
-            listaArtigosAdapter = new ListaArtigosAdapter(artigos, this);
+            listaArtigosAdapter = new ListaArtigosAdapter(artigos, this, false);
 
 
             ///normal

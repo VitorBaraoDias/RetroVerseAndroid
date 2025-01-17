@@ -37,7 +37,7 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
 
     Carrinho carrinho;
     private CheckoutAdapter checkoutAdapter;
-    TextView txtUsanameCheckout, txtLocationCheckout, txtPostalCodeCheckout;
+    TextView txtUsanameCheckout, txtLocationCheckout, txtPostalCodeCheckout, txtPrecoItemsCheckout, txtPrecoTotalItemsCheckout;
 
     String name, country, city, addres, postalCode;
     int selectedIdTipoPagamento = 0, selectedIdMetodoExpedicao = 0;
@@ -57,6 +57,8 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         txtPostalCodeCheckout = findViewById(R.id.txtPostalCodeCountryCityCheckout);
         textInputLayoutMetodoPagamento = findViewById(R.id.textInputLayoutMetodoPagamento);
         textInputLayoutMetodoExpedicao = findViewById(R.id.textInputLayoutMetodoExpedicao);
+        txtPrecoItemsCheckout = findViewById(R.id.txtPrecoItemsCheckout);
+        txtPrecoTotalItemsCheckout = findViewById(R.id.txtPrecoTotalItemsCheckout);
         dropdownMenuTipoPagemento = findViewById(R.id.dropdown_menu);
         dropdownMenuMetodoExpedicao = findViewById(R.id.dropdown_menuMetodoExpedicao);
 
@@ -73,6 +75,7 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         carrinho  = Singleton.getInstance(this).getCart();
         setAdapter(carrinho.getLinhasCarrinho());
 
+        setInforOrderPrice(carrinho);
 
 
 
@@ -112,6 +115,10 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         } else {
             checkoutAdapter.notifyDataSetChanged();
         }
+    }
+    private void setInforOrderPrice(Carrinho carrinho){
+        txtPrecoItemsCheckout.setText(carrinho.getTotalPriceFormatted());
+        txtPrecoTotalItemsCheckout.setText(carrinho.getTotalPriceFormatted());
     }
 
     public void openCart(View view) {

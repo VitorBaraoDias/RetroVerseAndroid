@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
     private void setAdapter(ArrayList<Artigo> artigosUser) {
         if (listaArtigosAdapter == null) {
 
-            listaArtigosAdapter = new ListaArtigosAdapter(artigosUser, getActivity());
+            listaArtigosAdapter = new ListaArtigosAdapter(artigosUser, getActivity(),false);
 
             listaArtigosAdapter.setOnItemClickListener(this);
 
@@ -126,13 +126,6 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
     @Override
     public void onItemClick(Artigo artigo, int position) {
 
-        /*if (artigo.getTipoArtigo().equals("LOJA")) {
-            Intent intent = new Intent(getContext(), ArtigoDetailsLojaActivity.class);
-            intent.putExtra("ID", (int) artigo.getId());
-            startActivity(intent);
-        } else {
-            Toast.makeText(getActivity(), "nao é tipo loja", Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     public void openEditProfileDialog() {

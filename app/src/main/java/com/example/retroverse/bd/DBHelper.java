@@ -27,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Colunas
     private static final String ID = "id";
+    private static final String ID_ARTIGO = "idartigo";
     private static final String TOKEN = "token";
 
     private static final String IDPERFIL = "idperfil";
@@ -64,6 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TOKEN + " TEXT, "
                 + IDPERFIL + " INTEGER NOT NULL, "
+                + ID_ARTIGO + " INTEGER NOT NULL, "
                 + NOME + " TEXT, "
                 + DESCRICAO + " TEXT, "
                 + PRECOANUNCIO + " REAL, "
@@ -97,6 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(TOKEN, Utils.getToken(context));
         values.put(IDPERFIL, artigo.getPerfil().getId());
+        values.put(ID_ARTIGO, artigo.getId());
         values.put(NOME, artigo.getNome());
         values.put(DESCRICAO, artigo.getDescricao());
         values.put(PRECOANUNCIO, artigo.getPrecoAnuncio());
@@ -125,7 +128,7 @@ public class DBHelper extends SQLiteOpenHelper {
         this.db.delete(TABLE_FAVORITOS_ARTIGOS, null, null);
     }
     public boolean removerFavoritoArtigo(int id) {
-        int rowsDeleted = db.delete(TABLE_FAVORITOS_ARTIGOS, ID + " = ?", new String[]{String.valueOf(id)});
+        int rowsDeleted = db.delete(TABLE_FAVORITOS_ARTIGOS, ID_ARTIGO + " = ?", new String[]{String.valueOf(id)});
         return rowsDeleted > 0;
     }
 

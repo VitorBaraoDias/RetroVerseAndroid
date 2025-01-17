@@ -160,21 +160,32 @@ public class Artigo implements Serializable {
 
     public String getPrimeiraFotoUrl() {
         if (fotos != null && !fotos.isEmpty()) {
-            return baseUrl + fotos.get(0); // Retorna a URL concatenada com a primeira foto da lista
+            return baseUrl + fotos.get(0);
         }
-        return null; // Caso não haja fotos, retorna null
+        return null;
     }
-    // Função para formatar o preço
     public String getPrecoFormatado() {
-        // Cria um DecimalFormatSymbols para ajustar o separador de decimais para a vírgula
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(',');
         symbols.setGroupingSeparator('.');
 
-        // Cria o formatador
         DecimalFormat format = new DecimalFormat("#,##0.00", symbols);
 
-        // Formata o preço com o símbolo de Euro
         return format.format(precoAnuncio) + "€";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Se for o mesmo objeto
+        if (obj == null || getClass() != obj.getClass()) return false; // Verifica se são da mesma classe
+
+        Artigo artigo = (Artigo) obj;
+
+        return this.id == artigo.id; // Compara pelo atributo "id"
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id); // Gera o hash baseado no "id"
     }
 }

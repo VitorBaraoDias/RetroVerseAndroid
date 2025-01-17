@@ -1,7 +1,5 @@
 package com.example.retroverse.Activities;
 
-import static java.security.AccessController.getContext;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
-import com.example.retroverse.ArtigoMarketPlaceDetailsActivity;
 import com.example.retroverse.Listeners.CartListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
@@ -82,7 +79,7 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
         if (listaArtigosAdapter == null) {
             // Inicializa os adaptadores com as listas separadas
 
-            listaArtigosAdapter = new ListaArtigosAdapter(artigos, getApplicationContext());
+            listaArtigosAdapter = new ListaArtigosAdapter(artigos, getApplicationContext(), true);
             listaArtigosAdapter.setOnItemClickListener(this);
 
             ///normal
@@ -123,4 +120,7 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
         Singleton.getInstance(this).addToCartAPI(Utils.getToken(this), artigo.getId(), this);
     }
 
+    public void finishaActivity(View view) {
+        finish();
+    }
 }
