@@ -61,6 +61,7 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
         setAdapter(Singleton.getInstance(this).filterNonPremiumArticles(id));
     }
 
+
     private void carregarArtigo(){
         txtDetailsNomeLoja.setText(artigo.getNome());
         txtPrecoDetailsLoja.setText(artigo.getPrecoFormatado());
@@ -75,6 +76,7 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgPrimeiraImagemDetalhesLoja);
     }
+
     private void setAdapter(ArrayList<Artigo> artigos) {
         if (listaArtigosAdapter == null) {
             // Inicializa os adaptadores com as listas separadas
@@ -91,6 +93,8 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
             listaArtigosAdapter.notifyDataSetChanged();
         }
     }
+
+    //
     @Override
     public void onItemClick(Artigo artigo, int position) {
 
