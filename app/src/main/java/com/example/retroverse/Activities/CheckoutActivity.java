@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +24,10 @@ import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.Models.Metodoexpedicao;
 import com.example.retroverse.Models.Tipopagamento;
-import com.example.retroverse.Models.Venda;
+import com.example.retroverse.Models.Fatura;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
 
     Carrinho carrinho;
     private CheckoutAdapter checkoutAdapter;
-    TextView txtUsanameCheckout, txtLocationCheckout, txtPostalCodeCheckout;
+    TextView txtUsanameCheckout, txtLocationCheckout, txtPostalCodeCheckout, txtPrecoItemsCheckout, txtPrecoTotalItemsCheckout;
 
     String name, country, city, addres, postalCode;
     int selectedIdTipoPagamento = 0, selectedIdMetodoExpedicao = 0;
@@ -57,6 +56,8 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         txtPostalCodeCheckout = findViewById(R.id.txtPostalCodeCountryCityCheckout);
         textInputLayoutMetodoPagamento = findViewById(R.id.textInputLayoutMetodoPagamento);
         textInputLayoutMetodoExpedicao = findViewById(R.id.textInputLayoutMetodoExpedicao);
+        txtPrecoItemsCheckout = findViewById(R.id.txtPrecoItemsCheckout);
+        txtPrecoTotalItemsCheckout = findViewById(R.id.txtPrecoTotalItemsCheckout);
         dropdownMenuTipoPagemento = findViewById(R.id.dropdown_menu);
         dropdownMenuMetodoExpedicao = findViewById(R.id.dropdown_menuMetodoExpedicao);
 
@@ -73,6 +74,7 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         carrinho  = Singleton.getInstance(this).getCart();
         setAdapter(carrinho.getLinhasCarrinho());
 
+        setInforOrderPrice(carrinho);
 
 
 
@@ -112,6 +114,10 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
         } else {
             checkoutAdapter.notifyDataSetChanged();
         }
+    }
+    private void setInforOrderPrice(Carrinho carrinho){
+        txtPrecoItemsCheckout.setText(carrinho.getTotalPriceFormatted());
+        txtPrecoTotalItemsCheckout.setText(carrinho.getTotalPriceFormatted());
     }
 
     public void openCart(View view) {
@@ -182,10 +188,10 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
     }
 
     @Override
-    public void onOrderDetails(Venda venda) {
+    public void onOrderDetails(Fatura fatura) {
 
         Intent intent = new Intent(this, OrderDetailsActivity.class);
-        intent.putExtra("venda", venda);
+        intent.putExtra("venda", fatura);
         startActivity(intent);
         finish();
 

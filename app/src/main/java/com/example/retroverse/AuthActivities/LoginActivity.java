@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements AuthListener {
 
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+        finish();
 
     }
     // Método para mostrar o loading

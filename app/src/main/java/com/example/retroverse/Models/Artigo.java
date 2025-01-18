@@ -28,7 +28,6 @@ public class Artigo implements Serializable {
     private boolean premium = false;
     private boolean isLiked = false;
     private Perfil perfil;
-    private final String baseUrl = "http://10.0.2.2/RetroVerse/frontend/web/uploads/img-artigos/";
 
     // Getters e Setters (pode usar o Lombok para gerar isso automaticamente)
     public int getId() {
@@ -159,7 +158,7 @@ public class Artigo implements Serializable {
         isLiked = liked;
     }
 
-/*    public String getPrimeiraFotoUrl() {
+    /*    public String getPrimeiraFotoUrl() {
         if (fotos != null && !fotos.isEmpty()) {
             return baseUrl + fotos.get(0);
         }
@@ -174,6 +173,7 @@ public class Artigo implements Serializable {
         return null;
     }
 
+
     public String getPrecoFormatado() {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(',');
@@ -182,5 +182,20 @@ public class Artigo implements Serializable {
         DecimalFormat format = new DecimalFormat("#,##0.00", symbols);
 
         return format.format(precoAnuncio) + "€";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Se for o mesmo objeto
+        if (obj == null || getClass() != obj.getClass()) return false; // Verifica se são da mesma classe
+
+        Artigo artigo = (Artigo) obj;
+
+        return this.id == artigo.id; // Compara pelo atributo "id"
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id); // Gera o hash baseado no "id"
     }
 }

@@ -28,7 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;

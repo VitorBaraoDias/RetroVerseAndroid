@@ -8,21 +8,16 @@
         android:title="Home"
     />
     <item
-        android:id="@+id/search2"
-        android:icon="@drawable/ic_baseline_search_24"
-        android:title="oi"
+        android:id="@+id/navCollection"
+        android:icon="@drawable/btn_collection"
+        android:title="Collection"
 
         />
     <item
         android:id="@+id/navHeart"
         android:icon="@drawable/heart"
-        android:title="oi"
+        android:title="Favorites"
 
-        />
-    <item
-        android:id="@+id/search3"
-        android:icon="@drawable/email_icon"
-        android:title="oi"
         />
     <item
         android:id="@+id/navProfile"

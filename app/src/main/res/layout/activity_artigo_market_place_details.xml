@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ArtigoMarketPlaceDetailsActivity">
+    tools:context=".Activities.ArtigoMarketPlaceDetailsActivity">
 
     <!-- ConstraintLayout que contém todos os elementos da tela -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,6 +63,7 @@
             android:layout_marginTop="44dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:onClick="backMenuActivity"
             app:srcCompat="@drawable/back_img" />
         <!-- Texto "1/" -->
 
@@ -306,7 +307,7 @@
                 app:srcCompat="@drawable/rounded_contacts_product_24" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/txtUsernamePerfiMarketplace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -327,19 +328,21 @@
                 android:paddingBottom="0dp"
                 android:text="ASK A QUESTION"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView21"
-                app:layout_constraintStart_toEndOf="@+id/textView21"
-                app:layout_constraintTop_toTopOf="@+id/textView21" />
+                app:layout_constraintBottom_toBottomOf="@+id/txtUsernamePerfiMarketplace"
+                app:layout_constraintStart_toEndOf="@+id/txtUsernamePerfiMarketplace"
+                app:layout_constraintTop_toTopOf="@+id/txtUsernamePerfiMarketplace" />
 
             <TextView
                 android:id="@+id/txtQuantidadeReviewsArtigoMarketplace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="-16dp"
+                android:layout_marginTop="-15dp"
                 android:fontFamily="@font/roboto"
                 android:text="152 Reviews"
+                app:layout_constraintBottom_toTopOf="@+id/txtDetailsNomeMarketplace"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.247"
+                app:layout_constraintHorizontal_bias="0.416"
                 app:layout_constraintStart_toStartOf="@+id/btnArtigoMarketplaceDetalhes"
                 app:layout_constraintTop_toBottomOf="@+id/btnArtigoMarketplaceDetalhes" />
 
@@ -356,6 +359,22 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnAddCartArtigoDetalhe" />
+
+            <RatingBar
+                android:id="@+id/ratingBarMarketPlace"
+                android:layout_width="238dp"
+                android:layout_height="37dp"
+                android:layout_marginBottom="-16dp"
+                android:isIndicator="false"
+                android:scaleX="0.4"
+                android:scaleY="0.5"
+                android:transformPivotX="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imgPerfilMarketplace"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.48"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imgPerfilMarketplace"
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

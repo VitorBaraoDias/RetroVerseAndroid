@@ -16,13 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
-import com.example.retroverse.ArtigoMarketPlaceDetailsActivity;
+import com.example.retroverse.Activities.ArtigoMarketPlaceDetailsActivity;
 import com.example.retroverse.Listeners.CartListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
 

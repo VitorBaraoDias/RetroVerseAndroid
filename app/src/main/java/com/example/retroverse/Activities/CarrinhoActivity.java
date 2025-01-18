@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -15,14 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retroverse.Adapters.CarrinhoAdapter;
-import com.example.retroverse.AuthActivities.LoginActivity;
-import com.example.retroverse.Listeners.CartCountRefreshListener;
 import com.example.retroverse.Listeners.CartRefreshListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;

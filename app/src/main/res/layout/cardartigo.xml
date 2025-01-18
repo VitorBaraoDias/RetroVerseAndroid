@@ -50,7 +50,7 @@
             android:id="@+id/txtMarcaCard2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:fontFamily="@font/roboto"
             android:text="€"
             android:textColor="@color/colorPrimary"
@@ -62,14 +62,15 @@
             android:id="@+id/txtPrecoArtigoCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="4dp"
             android:fontFamily="@font/roboto"
             android:text="12"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/txtMarcaCard2"
             app:layout_constraintStart_toEndOf="@+id/txtMarcaCard2"
-            app:layout_constraintTop_toTopOf="@+id/txtMarcaCard2" />
+            app:layout_constraintTop_toTopOf="@+id/txtMarcaCard2"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/txtTamanhoCardArtigo"
@@ -106,5 +107,38 @@
             app:layout_constraintVertical_bias="1.0"
             app:shapeAppearanceOverlay="@style/RoundedCorners"
             app:srcCompat="@drawable/image" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardContainerLike"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp"
+            app:cardPreventCornerOverlap="true"
+            app:layout_constraintBottom_toBottomOf="@+id/imgArtigoCardCarrinho"
+            app:layout_constraintEnd_toEndOf="@+id/imgArtigoCardCarrinho">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:paddingTop="3dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="3dp">
+
+                <ImageView
+                    android:id="@+id/imgContainerLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/group_171" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

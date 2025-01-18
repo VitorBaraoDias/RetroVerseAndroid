@@ -1,9 +1,8 @@
 package com.example.retroverse.Listeners;
 
-import com.example.retroverse.Models.Carrinho;
-import com.example.retroverse.Models.Venda;
+import com.example.retroverse.Models.Fatura;
 
 public interface CheckoutListener {
-    void onOrderDetails(Venda venda);
+    void onOrderDetails(Fatura fatura);
 
 }

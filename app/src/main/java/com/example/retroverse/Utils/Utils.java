@@ -1,4 +1,4 @@
-package com.example.retroverse;
+package com.example.retroverse.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.example.retroverse.Models.Artigo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,7 +19,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Utils {
     public static boolean isConnectionInternet(Context context){
@@ -116,7 +114,8 @@ public class Utils {
 
     ///
     public static String getToken(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);
+
+        SharedPreferences sharedPreferences =  context.getSharedPreferences("token", Context.MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
 
         return token != null ? token : "false";

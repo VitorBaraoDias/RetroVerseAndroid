@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -24,14 +23,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.Activities.ArtigoDetailsLojaActivity;
 import com.example.retroverse.Activities.MeuArtigoDetailsActivity;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
-import com.example.retroverse.Listeners.ListaArtigosListener;
+import com.example.retroverse.HistoricoActivity;
 import com.example.retroverse.Listeners.PerfilRefreshListener;
 import com.example.retroverse.MainActivity;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Models.Perfil;
 import com.example.retroverse.R;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
 
@@ -43,6 +42,8 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
     private RatingBar ratingBar;
     RecyclerView recyclerView;
     ListaArtigosAdapter listaArtigosAdapter;
+
+    ImageView btnMyOrders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,13 +57,15 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
         tvLocalizacao = rootView.findViewById(R.id.tvProfileLocation);
         tvAvaliacoesCount = rootView.findViewById(R.id.tvQuantidadeAvaliacoes);
         ratingBar = rootView.findViewById(R.id.profileRatingBar);
-        ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
+        ivFotoPerfil = rootView.findViewById(R.id.ivProfileImgListaFavoritos);
         recyclerView = rootView.findViewById(R.id.recyclerViewMyItems);
         btnEditProfile = rootView.findViewById(R.id.btnEditProfile);
         btnLogout = rootView.findViewById(R.id.btnLogout);
+        btnMyOrders = rootView.findViewById(R.id.btnMyOrders);
+
 
         Singleton.getInstance(getActivity()).setPerfilRefreshListener(this);
-        Singleton.getInstance(getActivity()).getPerfilAPI(Utils.getToken(getActivity()), getActivity());
+        Singleton.getInstance(getActivity()).getPerfilAPI(Utils.getToken(getContext()), getActivity());
 
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -72,10 +75,20 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
             }
         });
 
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logoutUser();
+
+            }
+        });
+
+        btnMyOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), HistoricoActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -124,7 +137,7 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
     private void setAdapter(ArrayList<Artigo> artigosUser) {
         if (listaArtigosAdapter == null) {
 
-            listaArtigosAdapter = new ListaArtigosAdapter(artigosUser, getActivity());
+            listaArtigosAdapter = new ListaArtigosAdapter(artigosUser, getActivity(),false);
 
             listaArtigosAdapter.setOnItemClickListener(this);
 

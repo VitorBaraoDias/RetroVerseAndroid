@@ -1,10 +1,12 @@
 package com.example.retroverse.Models;
 
+import com.example.retroverse.Singleton.Singleton;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Perfil {
+public class Perfil implements Serializable {
     private int id;
     private String descricao;
     private String username;
@@ -20,8 +22,6 @@ public class Perfil {
 
     @SerializedName("artigosvendidos")
     private ArrayList<Artigo> artigosVendidos;
-    private final String baseUrl = "http://10.0.2.2/defesa-2/RetroVerse/frontend/web/uploads/img-profile/";
-
 
     // Getters and Setters
 
@@ -30,7 +30,7 @@ public class Perfil {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public String setCaminhofotoperfil(String caminhofotoperfil) {
@@ -112,11 +112,20 @@ public class Perfil {
     public void setArtigosVendidos(ArrayList<Artigo> artigosVendidos) {
         this.artigosVendidos = artigosVendidos;
     }
-
+/*
     public String getFotoperfil() {
         if (caminhofotoperfil != null) {
             return baseUrl + caminhofotoperfil;
         }
         return null;
+    }*/
+
+    public String getFotoperfil() {
+        if (caminhofotoperfil != null) {
+            String dynamicServerIp = Singleton.getInstance(null).getDynamicServerIp();
+            return "http://" + dynamicServerIp + "/RetroVerse/frontend/web/uploads/img-profile/" + caminhofotoperfil;
+        }
+        return null;
     }
+
 }

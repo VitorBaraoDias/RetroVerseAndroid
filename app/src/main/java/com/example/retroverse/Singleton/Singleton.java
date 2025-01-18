@@ -13,7 +13,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.retroverse.Fragments.EditProfileFragment;
 import com.example.retroverse.Listeners.AuthCreatAccountListener;
 import com.example.retroverse.Listeners.AuthListener;
 import com.example.retroverse.Listeners.CartCountRefreshListener;
@@ -23,16 +22,18 @@ import com.example.retroverse.Listeners.CheckoutListener;
 import com.example.retroverse.Listeners.ListaArtigosListener;
 import com.example.retroverse.Listeners.ListaFavoritosListener;
 import com.example.retroverse.Listeners.PerfilRefreshListener;
+import com.example.retroverse.Listeners.RefreshArtigosListener;
+import com.example.retroverse.Listeners.RefreshFaturasListener;
+import com.example.retroverse.Listeners.RefreshFavoritosAfterActionListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
-import com.example.retroverse.Models.Favorito;
 import com.example.retroverse.Listeners.MetodoExpedicaoListener;
 import com.example.retroverse.Listeners.TipoPagamentoListener;
 import com.example.retroverse.Models.Metodoexpedicao;
 import com.example.retroverse.Models.Perfil;
 import com.example.retroverse.Models.Tipopagamento;
-import com.example.retroverse.Models.Venda;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Models.Fatura;
+import com.example.retroverse.Utils.Utils;
 import com.example.retroverse.bd.DBHelper;
 
 import java.util.ArrayList;
@@ -40,7 +41,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Singleton {
-
     public String baseUrl, serverIp;
 
     private static Singleton instance = null;
@@ -48,18 +48,22 @@ public class Singleton {
     private AuthListener loginListener;
     private AuthCreatAccountListener authCreatAccountListener;
     private ListaArtigosListener listaArtigosListener;
+    private RefreshArtigosListener refreshArtigosListener;
     private  ListaFavoritosListener listaFavoritosListener;
     private CartListener cartListener;
     private CartRefreshListener cartRefreshListener;
     private CartCountRefreshListener cartCountRefreshListener;
     private PerfilRefreshListener perfilRefreshListener;
+    private RefreshFavoritosAfterActionListener refreshFavoritosAfterActionListener;
     private ArrayList<Artigo> artigos = new ArrayList<>();
     private ArrayList<Artigo> favoritos = new ArrayList<>();
     private ArrayList<Tipopagamento> tipopagamentos = new ArrayList<>();
+    private ArrayList<Fatura> faturas = new ArrayList<>();
     private ArrayList<Metodoexpedicao> metodoexpedicaos = new ArrayList<>();
     private Carrinho carrinho;
     private Perfil perfil;
     private TipoPagamentoListener tipoPagamentoListener;
+    private RefreshFaturasListener refreshFaturasListener;
     private MetodoExpedicaoListener metodoExpedicaoListener;
     private CheckoutListener checkoutListener;
 
@@ -103,8 +107,17 @@ public class Singleton {
     public void setCreatAccountListener(AuthCreatAccountListener listener) {
         this.authCreatAccountListener = listener;
     }
+    public void setRefreshFaturasListener(RefreshFaturasListener listener) {
+        this.refreshFaturasListener = listener;
+    }
     public void setArtigosListener(ListaArtigosListener listener) {
         this.listaArtigosListener = listener;
+    }
+    public void setArtigosRefreshListener(RefreshArtigosListener listener) {
+        this.refreshArtigosListener = listener;
+    }
+    public void setRefreshFavoritosAfterActionListenerefreshFavoritosAfterActionListener(RefreshFavoritosAfterActionListener listener) {
+        this.refreshFavoritosAfterActionListener = listener;
     }
     public void setFavoritosListener(ListaFavoritosListener listener) {
         this.listaFavoritosListener = listener;
@@ -116,11 +129,9 @@ public class Singleton {
     public void setCartRefreshListener(CartRefreshListener listener) {
         this.cartRefreshListener = listener;
     }
-
     public void setCartCountRefreshListener(CartCountRefreshListener listener) {
         this.cartCountRefreshListener = listener;
     }
-
     public void setTipoPagamentoListener(TipoPagamentoListener listener) {
         this.tipoPagamentoListener = listener;
     }
@@ -141,6 +152,10 @@ public class Singleton {
     public void adicionarArtigoBD(Artigo artigo){
         dbHelper.adicionarFavoritoArtigo(artigo);
     }
+    public void removerArtigoBD(Artigo artigo){
+        dbHelper.removerFavoritoArtigo(artigo.getId());
+    }
+
 
 
     /// USER
@@ -165,6 +180,8 @@ public class Singleton {
             , new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.d("ERRO", error.getMessage().toString() );
+
                     Utils.displayError(error, context);
                 }
             }) {
@@ -249,7 +266,7 @@ public class Singleton {
                     artigos = Utils.parseJsonToList(response, Artigo.class);
 
                     if (listaArtigosListener != null) {
-                        listaArtigosListener.onRefreshListaArtigos(artigos);
+                        listaArtigosListener.onGetListaArtigos(getArtigos());
                     }
                 }
             }, new Response.ErrorListener() {
@@ -405,11 +422,14 @@ public class Singleton {
                 public void onResponse(String response) {
 
                     Log.d("venda", response);
-                    Venda venda = Utils.fromJson(response, Venda.class);
-                    if (cartCountRefreshListener != null && checkoutListener != null) {
+                    Fatura fatura = Utils.fromJson(response, Fatura.class);
+                    if (cartCountRefreshListener != null && checkoutListener != null && listaArtigosListener != null) {
+                               //remove os artigos do carrinho
                         carrinho.getLinhasCarrinho().clear();
+
+                        refreshArtigosListener.onRefreshListaArtigos();
                         cartCountRefreshListener.onRefreshCarrinho(carrinho);
-                        checkoutListener.onOrderDetails(venda);
+                        checkoutListener.onOrderDetails(fatura);
                     }
 
                 }
@@ -444,6 +464,43 @@ public class Singleton {
         }
     }
 
+
+    public void getAllFaturasAPI( String token, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "vendas/compras?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta faturas", response);
+
+                    faturas = Utils.parseJsonToList(response, Fatura.class);
+
+                    if (refreshFaturasListener != null) {
+                        refreshFaturasListener.onRefreshFaturas(getFaturas());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+
     //PERFIL API
     public void getPerfilAPI(String token, Context context) {
         // Realizando a requisição GET
@@ -459,10 +516,10 @@ public class Singleton {
                     Log.d("Resposta perfil", response);
 
                     perfil = Utils.fromJson(response, Perfil.class);
-
                     if (perfilRefreshListener != null) {
                         perfilRefreshListener.onRefreshPerfil(perfil);
                     }
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -492,7 +549,7 @@ public class Singleton {
 
                     Log.d("perfil", response);
 
-                    Perfil perfil = Utils.fromJson(response, Perfil.class);
+                    perfil = Utils.fromJson(response, Perfil.class);
                     if (perfilRefreshListener != null) {
                         perfilRefreshListener.onRefreshPerfil(perfil);
                     }
@@ -652,6 +709,13 @@ public class Singleton {
         }
         return null;
     }
+
+    public ArrayList<Artigo>  removeArtigosAfterCheckout(){
+        for (Artigo artigoCarrinho : carrinho.getLinhasCarrinho()) {
+            artigos.removeIf(artigo -> artigo.getId() == artigoCarrinho.getId());
+        }
+        return new ArrayList<>(artigos);
+    }
     public ArrayList<Artigo> filterNonPremiumArticles(int idActiveItem) {
         ArrayList<Artigo> nonPremiumArticles = new ArrayList<>();
 
@@ -675,8 +739,6 @@ public class Singleton {
         return premiumArticles;
     }
     /// Functions ITEMS
-
-
     /// Functions Cart
     public Carrinho getCart() {
         return carrinho;
@@ -692,6 +754,90 @@ public class Singleton {
 
     /// FAVORITOS
 
+    public void addFavoritoAPI(String token, int idartigo, Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "favoritos?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    Log.d("adicionar favorito", response);
+
+                    Artigo artigo = Utils.fromJson(response, Artigo.class);
+                    favoritos.add(artigo);
+                    adicionarArtigoBD(artigo);
+
+                    if (refreshArtigosListener != null) {
+                        refreshArtigosListener.onRefreshListaArtigos();
+
+                    }
+
+                }
+            }
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("idartigo", String.valueOf(idartigo));
+                    return params;
+                }
+            };
+            // Configurando o RetryPolicy
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
+            ));
+
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    public void removeFavoritoAPI(String token,  Artigo artigo, Context context, boolean refreshListaFavs) {
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "favoritos/"+ String.valueOf(artigo.getId()) +"?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta linhacarrinho", response);
+
+                    removerArtigoBD(artigo);
+                    if (refreshArtigosListener!= null ) {
+                        refreshArtigosListener.onRefreshListaArtigos();
+                    }
+                    if (refreshFavoritosAfterActionListener!= null ) {
+                        refreshFavoritosAfterActionListener.onRefreshListaFavoritosAfterAction();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000, // Tempo de timeout em milissegundos (15 segundos)
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
 
     ///FAVORITOS
 
@@ -723,6 +869,30 @@ public class Singleton {
         String serverIp = sharedPreferences.getString("serverip", "10.0.2.2");
 
         return "http://" + serverIp + "/RetroVerse/frontend/web/uploads/img-artigos/";
+    }
+
+    /// get historico
+
+    public  ArrayList<Fatura> getFaturas() {
+        return new ArrayList<>(faturas);
+    }
+    public ArrayList<Fatura> getFaturasEntregasCompletas() {
+        ArrayList<Fatura> faturasCompletas = new ArrayList<>();
+        for (Fatura fatura : getFaturas()) {
+            if ("COMPLETED".equals(fatura.getEstadoEncomenda())) {
+                faturasCompletas.add(fatura);
+            }
+        }
+        return faturasCompletas;
+    }
+    public ArrayList<Fatura> getFaturasIncompletas() {
+        ArrayList<Fatura> faturasCompletas = new ArrayList<>();
+        for (Fatura fatura : getFaturas()) {
+            if (!"COMPLETED".equals(fatura.getEstadoEncomenda())) {
+                faturasCompletas.add(fatura);
+            }
+        }
+        return faturasCompletas;
     }
 
 }
