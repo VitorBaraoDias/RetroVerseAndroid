@@ -34,7 +34,7 @@ import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment implements PerfilRefreshListener, ListaArtigosAdapter.OnItemClickListener, EditProfileFragment.OnProfileEditListener {
+public class    ProfileFragment extends Fragment implements PerfilRefreshListener, ListaArtigosAdapter.OnItemClickListener, EditProfileFragment.OnProfileEditListener {
 
     private View rootView;
     private TextView tvUsername, tvDescricao, tvAvaliacoesCount, tvLocalizacao;
@@ -122,11 +122,13 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
 
             String fotoperfilUrl = perfil.getFotoperfil();
 
+            if (isAdded() && getActivity() != null) {
                 Glide.with(this)
                         .load(fotoperfilUrl)
                         .placeholder(R.drawable.profile_default_image)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivFotoPerfil);
+            }
 
                 ivFotoPerfil.setTag(fotoperfilUrl);
 
