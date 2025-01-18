@@ -16,7 +16,6 @@ import com.example.retroverse.MenuActivity;
 import com.example.retroverse.Modals.Modal;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity implements AuthListener {
@@ -30,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements AuthListener {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        txtUsername = findViewById(R.id.txtUsername);
+        txtUsername = findViewById(R.id.txtServer);
         txtPassword = findViewById(R.id.txtPassword);
 
 
@@ -46,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements AuthListener {
     public void clickLogin(View view) {
         String username = txtUsername.getText().toString().trim();
         String password = txtPassword.getText().toString().trim();
+
 
         if (!username.isEmpty() && !password.isEmpty()) {
             Modal.showDialogProgress(this);

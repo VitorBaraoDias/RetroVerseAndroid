@@ -24,14 +24,14 @@
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/roboto_bold"
             android:text="COLLECTION"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
         <TextView
             android:id="@+id/textView10"
@@ -74,8 +74,10 @@
             android:layout_width="0dp"
             android:layout_height="240dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
             android:scrollbars="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -125,6 +127,20 @@
             app:layout_constraintEnd_toEndOf="@+id/imageView9"
             app:layout_constraintStart_toStartOf="@+id/imageView9"
             app:layout_constraintTop_toTopOf="@+id/imageView9" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView11"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_margin="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/banner_collection"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:shapeAppearanceOverlay="@style/RoundedCorners" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

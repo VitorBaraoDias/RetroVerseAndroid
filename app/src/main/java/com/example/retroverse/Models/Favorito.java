@@ -1,6 +1,6 @@
 package com.example.retroverse.Models;
 
-import static com.example.retroverse.Singleton.Singleton.baseUrl;
+//import static com.example.retroverse.Singleton.Singleton.baseUrl;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

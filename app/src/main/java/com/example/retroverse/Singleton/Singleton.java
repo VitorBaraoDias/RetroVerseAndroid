@@ -1,6 +1,7 @@
 package com.example.retroverse.Singleton;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -8,6 +9,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -38,8 +40,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Singleton {
-    public static final String baseUrl = "http://10.0.2.2/defesa-2/RetroVerse/backend/web/api/";
 
+    public String baseUrl, serverIp;
 
     private static Singleton instance = null;
     private static RequestQueue volleyQueue = null;
@@ -78,7 +80,16 @@ public class Singleton {
         carrinho = new Carrinho();
         dbHelper = new DBHelper(context);
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences("serverip", Context.MODE_PRIVATE);
+        serverIp = sharedPreferences.getString("serverip", "10.0.2.2");
+        baseUrl = "http://" + serverIp + "/RetroVerse/backend/web/api/";
     }
+
+    //GET SERVER
+    public String getDynamicServerIp() {
+        return serverIp;
+    }
+    //GET SERVER
 
     //listeners
     public void setLoginListener(AuthListener listener) {
@@ -433,7 +444,6 @@ public class Singleton {
         }
     }
 
-
     //PERFIL API
     public void getPerfilAPI(String token, Context context) {
         // Realizando a requisição GET
@@ -470,7 +480,7 @@ public class Singleton {
         }
     }
 
-    public void putPerfilAPI(String token, Context context, String descricao, String morada){
+    public void putPerfilAPI(String token, Context context, String descricao, String morada, String fotoperfil){
         if(!Utils.isConnectionInternet(context)){
             Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
         }
@@ -500,15 +510,14 @@ public class Singleton {
                     Map<String, String> params = new HashMap<>();
                     params.put("descricao", String.valueOf(descricao));
                     params.put("morada", String.valueOf(morada));
+                    Log.d("fotoperfil", fotoperfil);
+                    params.put("fotoperfil", String.valueOf(fotoperfil));
                     return params;
                 }
             };
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    15000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            ));
-
+            int socketTimeout = 30000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            stringRequest.setRetryPolicy(policy);
             volleyQueue.add(stringRequest);
         }
     }
@@ -704,9 +713,16 @@ public class Singleton {
         return metodoexpedicaos.get(position);
     }
 
-
-    //RETORNAR O PERFIL DO USER
     public Perfil getPerfil() {
         return perfil;
     }
+
+    //GET DA URL DINAMICA
+    public String getImageBaseUrl(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("serverip", Context.MODE_PRIVATE);
+        String serverIp = sharedPreferences.getString("serverip", "10.0.2.2");
+
+        return "http://" + serverIp + "/RetroVerse/frontend/web/uploads/img-artigos/";
+    }
+
 }

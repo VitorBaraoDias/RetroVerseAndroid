@@ -20,53 +20,22 @@
         app:layout_constraintStart_toEndOf="@+id/imgBackMainActivity"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
-        android:fontFamily="@font/urbanist"
-        android:text="Don’t have an account? "
-        android:textColor="#1E232C"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.353"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/urbanist"
-        android:text="Register Now"
-        android:textColor="#0000FF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/btnSaveConfiguration"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="156dp"
         android:backgroundTint="@color/colorOnSurface"
-        android:onClick="clickLogin"
 
-        android:text="LOGIN"
+        android:onClick="clickLogin"
+        android:text="SAVE"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtServer" />
 
     <ImageView
         android:id="@+id/imgBackMainActivity"
@@ -86,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:fontFamily="@font/roboto"
-        android:text="Welcome back! Glad \n to see you, Again!"
+        android:text="Server Configuration"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -98,30 +67,15 @@
         style="@style/CustomWhiteEditTextRoundedStyleWithTint"
         android:layout_width="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="24dp"
-        android:drawableStart="@drawable/email_icon"
-        android:hint="Enter your username..."
+        android:drawableStart="@android:drawable/ic_menu_manage"
+        android:hint="Enter your server IP..."
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/txtPassword"
-        style="@style/CustomWhiteEditTextRoundedStyleWithTint"
-        android:layout_width="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="24dp"
-        android:drawableStart="@drawable/lock_icon"
-        android:hint="Enter your passord..."
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtServer" />
 
     <TextView
         android:id="@+id/textView2"
@@ -129,23 +83,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:fontFamily="@font/roboto_bold"
-        android:text="USERNAME"
+        android:text="SERVER IP"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/txtServer"
         app:layout_constraintStart_toStartOf="@+id/txtServer" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/roboto_bold"
-        android:text="PASSWORD"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/txtPassword"
-        app:layout_constraintStart_toStartOf="@+id/txtPassword" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

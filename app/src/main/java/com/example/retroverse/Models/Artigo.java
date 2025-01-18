@@ -1,5 +1,6 @@
 package com.example.retroverse.Models;
 
+import com.example.retroverse.Singleton.Singleton;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -158,23 +159,28 @@ public class Artigo implements Serializable {
         isLiked = liked;
     }
 
+/*    public String getPrimeiraFotoUrl() {
+        if (fotos != null && !fotos.isEmpty()) {
+            return baseUrl + fotos.get(0);
+        }
+        return null;
+    }*/
+
     public String getPrimeiraFotoUrl() {
         if (fotos != null && !fotos.isEmpty()) {
-            return baseUrl + fotos.get(0); // Retorna a URL concatenada com a primeira foto da lista
+            String dynamicServerIp = Singleton.getInstance(null).getDynamicServerIp();
+            return "http://" + dynamicServerIp + "/RetroVerse/frontend/web/uploads/img-artigos/" + fotos.get(0);
         }
-        return null; // Caso não haja fotos, retorna null
+        return null;
     }
-    // Função para formatar o preço
+
     public String getPrecoFormatado() {
-        // Cria um DecimalFormatSymbols para ajustar o separador de decimais para a vírgula
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();
         symbols.setDecimalSeparator(',');
         symbols.setGroupingSeparator('.');
 
-        // Cria o formatador
         DecimalFormat format = new DecimalFormat("#,##0.00", symbols);
 
-        // Formata o preço com o símbolo de Euro
         return format.format(precoAnuncio) + "€";
     }
 }

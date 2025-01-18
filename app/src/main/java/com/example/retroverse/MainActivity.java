@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.retroverse.Activities.ConfigureServerActivity;
 import com.example.retroverse.AuthActivities.CreateAccountActivity;
 import com.example.retroverse.AuthActivities.LoginActivity;
 
@@ -34,10 +35,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
     public void openCreateAccountActivity(View view) {
         Intent intent = new Intent(this, CreateAccountActivity.class);
         startActivity(intent);
     }
+
+    public void openConfigureServerActivity(View view) {
+        Intent intent = new Intent(this, ConfigureServerActivity.class);
+        startActivity(intent);
+    }
+
+
     public boolean isTokenValid(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("token", Context.MODE_PRIVATE);
 

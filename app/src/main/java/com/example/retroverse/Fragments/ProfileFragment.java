@@ -1,6 +1,8 @@
 package com.example.retroverse.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,9 +22,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.retroverse.Activities.ArtigoDetailsLojaActivity;
+import com.example.retroverse.Activities.MeuArtigoDetailsActivity;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
 import com.example.retroverse.Listeners.ListaArtigosListener;
 import com.example.retroverse.Listeners.PerfilRefreshListener;
+import com.example.retroverse.MainActivity;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Models.Perfil;
@@ -35,7 +39,7 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
 
     private View rootView;
     private TextView tvUsername, tvDescricao, tvAvaliacoesCount, tvLocalizacao;
-    private ImageView ivFotoPerfil;
+    private ImageView ivFotoPerfil, btnEditProfile, btnLogout;
     private RatingBar ratingBar;
     RecyclerView recyclerView;
     ListaArtigosAdapter listaArtigosAdapter;
@@ -54,18 +58,27 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
         ratingBar = rootView.findViewById(R.id.profileRatingBar);
         ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
         recyclerView = rootView.findViewById(R.id.recyclerViewMyItems);
+        btnEditProfile = rootView.findViewById(R.id.btnEditProfile);
+        btnLogout = rootView.findViewById(R.id.btnLogout);
 
         Singleton.getInstance(getActivity()).setPerfilRefreshListener(this);
         Singleton.getInstance(getActivity()).getPerfilAPI(Utils.getToken(getActivity()), getActivity());
 
-        // Botão para abrir o EditProfileDialogFragment
-        ImageView btnEditProfile = rootView.findViewById(R.id.btnEditProfile); // Certifique-se de que o ID está correto
+
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openEditProfileDialog();
             }
         });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logoutUser();
+            }
+        });
+
 
         return rootView;
     }
@@ -101,6 +114,9 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
                         .placeholder(R.drawable.profile_default_image)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivFotoPerfil);
+
+                ivFotoPerfil.setTag(fotoperfilUrl);
+
             setAdapter(perfil.getArtigosPublicados());
         }
     }
@@ -123,33 +139,39 @@ public class ProfileFragment extends Fragment implements PerfilRefreshListener, 
         }
     }
 
+    private void logoutUser() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("token", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("token");
+        editor.apply();
+
+        Intent intent = new Intent(requireContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
     @Override
     public void onItemClick(Artigo artigo, int position) {
-
-        /*if (artigo.getTipoArtigo().equals("LOJA")) {
-            Intent intent = new Intent(getContext(), ArtigoDetailsLojaActivity.class);
-            intent.putExtra("ID", (int) artigo.getId());
+            Intent intent = new Intent(getContext(), MeuArtigoDetailsActivity.class);
+            intent.putExtra("ID",(int) artigo.getId());
             startActivity(intent);
-        } else {
-            Toast.makeText(getActivity(), "nao é tipo loja", Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     public void openEditProfileDialog() {
         String descricao = tvDescricao.getText().toString();
         String localizacao = tvLocalizacao.getText().toString();
-        String fotoUrl = Singleton.getInstance(getContext()).getPerfil().getFotoperfil();
+        String fotoUrl = ivFotoPerfil.getTag().toString();
 
 
         EditProfileFragment editProfileDialogFragment = EditProfileFragment.newInstance(descricao, localizacao, fotoUrl);
 
-        editProfileDialogFragment.setTargetFragment(this, 0); // Define o fragmento atual como alvo
+        editProfileDialogFragment.setTargetFragment(this, 0);
         editProfileDialogFragment.show(getParentFragmentManager(), "EDIT_PROFILE_DIALOG");
     }
 
 
     @Override
     public void onProfileEdited(String descricao, String localizacao, String fotoUrl) {
-        Toast.makeText(getContext(), "Perfil atualizado: ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Perfil atualizado", Toast.LENGTH_SHORT).show();
     }
 }

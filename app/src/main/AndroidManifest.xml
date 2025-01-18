@@ -32,6 +32,9 @@
             android:name=".Activities.ArtigoDetailsLojaActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.MeuArtigoDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MenuActivity"
             android:exported="false" />
         <activity
@@ -39,6 +42,9 @@
             android:exported="false" />
         <activity
             android:name=".AuthActivities.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ConfigureServerActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

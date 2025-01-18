@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".Activities.ArtigoDetailsLojaActivity">
+
+    <!-- ConstraintLayout que contém todos os elementos da tela -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <!-- Botão de Voltar -->
+        <ImageView
+            android:id="@+id/imgBackMainActivity2"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:rotationY="-180"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/rounded_arrow_right_alt_24" />
+        <!-- Texto "1/" -->
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
+            android:fontFamily="@font/roboto"
+            android:text="1/"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBackMainActivity2"
+            app:layout_constraintEnd_toStartOf="@+id/txtDetalhesartigoLoja"
+            app:layout_constraintTop_toTopOf="@+id/imgBackMainActivity2"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!-- Texto "2" -->
+        <TextView
+            android:id="@+id/txtDetalhesartigoLoja"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:text="2"
+            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+        <!-- Imagem Principal -->
+
+        <!-- Layout sobrepondo a imagem -->
+
+        <ImageView
+            android:id="@+id/imgPrimeiraImagemDetalhesLoja"
+            android:layout_width="0dp"
+            android:layout_height="350dp"
+            android:layout_marginStart="-15dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="-15dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/windbreaker_placeholder" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/overlappingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-30dp"
+            android:background="@drawable/card_detalhes_artigo"
+            android:padding="24dp"
+            android:paddingTop="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgPrimeiraImagemDetalhesLoja"
+            app:layout_constraintVertical_bias="0.0">
+
+            <!-- Conteúdo rolável dentro do layout sobreposto -->
+
+            <TextView
+                android:id="@+id/txtDetailsNomeLoja"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_bold"
+                android:maxLines="1"
+                android:text="CORTEIZ SHOTTA JACKET"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/roboto"
+                android:text="Condition:"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+            <TextView
+                android:id="@+id/tvProfileDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/roboto"
+                android:text="Size:"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/roboto"
+                android:text="Brand:"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/txtCondicaoDetailsLoja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/roboto"
+                android:text="New without tags"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/txtDetailsSizeLoja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/roboto"
+                android:text="M"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvProfileDescription"
+                app:layout_constraintStart_toEndOf="@+id/tvProfileDescription"
+                app:layout_constraintTop_toTopOf="@+id/tvProfileDescription" />
+
+            <TextView
+                android:id="@+id/txdDetailsMarcaLoja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/roboto"
+                android:text="Corteiz"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/tvProfileDescription"
+                app:layout_constraintStart_toEndOf="@+id/textView15"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/txtPrecoDetailsLoja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="195,00€"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/txtDetailsNomeLoja"
+                app:layout_constraintTop_toBottomOf="@+id/txtDetailsNomeLoja" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="1dp"
+                android:fontFamily="@font/roboto"
+                android:text="(incl.)"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/txtPrecoDetailsLoja"
+                app:layout_constraintStart_toEndOf="@+id/txtPrecoDetailsLoja"
+                app:layout_constraintTop_toTopOf="@+id/txtPrecoDetailsLoja"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPrecoDetailsLoja" />
+
+            <TextView
+                android:id="@+id/txtDetailsDescricaoLoja"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto"
+                android:maxLines="4"
+                android:text="Description"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tvProfileDescription"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileDescription" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="292dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
