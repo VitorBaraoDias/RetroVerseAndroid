@@ -21,7 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class EditProfileFragment extends DialogFragment {
@@ -67,7 +67,7 @@ public class EditProfileFragment extends DialogFragment {
         rootView = inflater.inflate(R.layout.dialog_edit_profile, container, false);
         etDescricao = rootView.findViewById(R.id.etProfileDescription);
         etLocalizacao = rootView.findViewById(R.id.etProfileLocation);
-        ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
+        ivFotoPerfil = rootView.findViewById(R.id.ivProfileImgListaFavoritos);
         btnConfirmar = rootView.findViewById(R.id.btnSavePerfil);
         btnEditarFoto = rootView.findViewById(R.id.btnEditProfilePicture);
 

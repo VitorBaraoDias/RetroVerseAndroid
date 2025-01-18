@@ -3,10 +3,11 @@ package com.example.retroverse.Models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Venda implements Serializable {
+public class Fatura implements Serializable {
     @SerializedName("idvenda")
     private int idVenda;
     private String codigo;
@@ -32,8 +33,24 @@ public class Venda implements Serializable {
     private String pais;
     private String cidade;
     @SerializedName("linhasvenda")
-    private ArrayList<Artigo> artigoList = new ArrayList<>();
+    private ArrayList<Linhavenda> linhavendas = new ArrayList<>();
+    private String email;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ArrayList<Linhavenda> getLinhavendas() {
+        return linhavendas;
+    }
+
+    public void setLinhavendas(ArrayList<Linhavenda> linhavendas) {
+        this.linhavendas = linhavendas;
+    }
 
     // Getters e Setters
     public int getIdVenda() {
@@ -132,11 +149,31 @@ public class Venda implements Serializable {
         this.tipoPagamento = tipoPagamento;
     }
 
-    public ArrayList<Artigo> getLinhasVenda() {
-        return artigoList;
+    public ArrayList<Linhavenda> getLinhasVenda() {
+        return linhavendas;
     }
 
-    public void setLinhasVenda( ArrayList<Artigo> artigoList) {
-        this.artigoList = artigoList;
+    public void setLinhasVenda( ArrayList<Linhavenda> linhavendas) {
+        this.linhavendas = linhavendas;
+    }
+    public ArrayList<Artigo> getArtigos() {
+        ArrayList<Artigo> artigos = new ArrayList<>();
+        for (Linhavenda linha : linhavendas) {
+            if (linha.getArtigo() != null) {
+                artigos.add(linha.getArtigo());
+            }
+        }
+        return artigos;
+    }
+
+
+    public String getPrecoFormatado() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator(',');
+        symbols.setGroupingSeparator('.');
+
+        DecimalFormat format = new DecimalFormat("#,##0.00", symbols);
+
+        return format.format(total) + "€";
     }
 }

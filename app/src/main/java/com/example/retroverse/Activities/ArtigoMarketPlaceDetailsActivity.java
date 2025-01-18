@@ -21,7 +21,7 @@ import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 
 public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity implements CartListener {
 
@@ -32,7 +32,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity implemen
     ImageView imgPrimeiraImagemDetalhesMarketplace, imgPerfilMarketplace;
     TextView txtDetailsNomeMarketPlace, txdDetailsMarcaMarketplace, txtPrecoDetailsMarketplace,
             txtCondicaoDetailsMarketplace, txtDetailsSizeMarketplace, txtDetailsDescricaoMarketplace,
-            txtQuantidadeReviewsArtigoMarketplace;
+            txtQuantidadeReviewsArtigoMarketplace, txtUsernamePerfiMarketplace;
     RatingBar ratingBar;
 
     @Override
@@ -52,6 +52,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity implemen
         imgPrimeiraImagemDetalhesMarketplace = findViewById(R.id.imgPrimeiraImagemDetalhesMarketplace);
         txtQuantidadeReviewsArtigoMarketplace = findViewById(R.id.txtQuantidadeReviewsArtigoMarketplace);
         imgPerfilMarketplace = findViewById(R.id.imgPerfilMarketplace);
+        txtUsernamePerfiMarketplace = findViewById(R.id.txtUsernamePerfiMarketplace);
         ratingBar = findViewById(R.id.ratingBarMarketPlace);
 
         int id = getIntent().getIntExtra("ID", 0);
@@ -77,6 +78,7 @@ public class ArtigoMarketPlaceDetailsActivity extends AppCompatActivity implemen
         txtQuantidadeReviewsArtigoMarketplace.setText( String.valueOf(artigo.getPerfil().getQuantidadeAvaliacoes() + " Reviews"));
         txtQuantidadeReviewsArtigoMarketplace.setText( String.valueOf(artigo.getPerfil().getQuantidadeAvaliacoes() + " Reviews"));
         ratingBar.setRating(artigo.getPerfil().getMediaAvaliacoes());
+        txtUsernamePerfiMarketplace.setText(artigo.getPerfil().getUsername());
 
         Glide.with(this)
                 .load(artigo.getPerfil().getFotoperfil())

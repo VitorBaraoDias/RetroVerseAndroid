@@ -21,6 +21,8 @@ import com.example.retroverse.Listeners.ListaArtigosListener;
 import com.example.retroverse.Listeners.ListaFavoritosListener;
 import com.example.retroverse.Listeners.PerfilRefreshListener;
 import com.example.retroverse.Listeners.RefreshArtigosListener;
+import com.example.retroverse.Listeners.RefreshFaturasListener;
+import com.example.retroverse.Listeners.RefreshFavoritosAfterActionListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.Listeners.MetodoExpedicaoListener;
@@ -28,8 +30,8 @@ import com.example.retroverse.Listeners.TipoPagamentoListener;
 import com.example.retroverse.Models.Metodoexpedicao;
 import com.example.retroverse.Models.Perfil;
 import com.example.retroverse.Models.Tipopagamento;
-import com.example.retroverse.Models.Venda;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Models.Fatura;
+import com.example.retroverse.Utils.Utils;
 import com.example.retroverse.bd.DBHelper;
 
 import java.util.ArrayList;
@@ -51,13 +53,16 @@ public class Singleton {
     private CartRefreshListener cartRefreshListener;
     private CartCountRefreshListener cartCountRefreshListener;
     private PerfilRefreshListener perfilRefreshListener;
+    private RefreshFavoritosAfterActionListener refreshFavoritosAfterActionListener;
     private ArrayList<Artigo> artigos = new ArrayList<>();
     private ArrayList<Artigo> favoritos = new ArrayList<>();
     private ArrayList<Tipopagamento> tipopagamentos = new ArrayList<>();
+    private ArrayList<Fatura> faturas = new ArrayList<>();
     private ArrayList<Metodoexpedicao> metodoexpedicaos = new ArrayList<>();
     private Carrinho carrinho;
     private Perfil perfil;
     private TipoPagamentoListener tipoPagamentoListener;
+    private RefreshFaturasListener refreshFaturasListener;
     private MetodoExpedicaoListener metodoExpedicaoListener;
     private CheckoutListener checkoutListener;
 
@@ -92,11 +97,17 @@ public class Singleton {
     public void setCreatAccountListener(AuthCreatAccountListener listener) {
         this.authCreatAccountListener = listener;
     }
+    public void setRefreshFaturasListener(RefreshFaturasListener listener) {
+        this.refreshFaturasListener = listener;
+    }
     public void setArtigosListener(ListaArtigosListener listener) {
         this.listaArtigosListener = listener;
     }
     public void setArtigosRefreshListener(RefreshArtigosListener listener) {
         this.refreshArtigosListener = listener;
+    }
+    public void setRefreshFavoritosAfterActionListenerefreshFavoritosAfterActionListener(RefreshFavoritosAfterActionListener listener) {
+        this.refreshFavoritosAfterActionListener = listener;
     }
     public void setFavoritosListener(ListaFavoritosListener listener) {
         this.listaFavoritosListener = listener;
@@ -401,16 +412,14 @@ public class Singleton {
                 public void onResponse(String response) {
 
                     Log.d("venda", response);
-                    Venda venda = Utils.fromJson(response, Venda.class);
+                    Fatura fatura = Utils.fromJson(response, Fatura.class);
                     if (cartCountRefreshListener != null && checkoutListener != null && listaArtigosListener != null) {
-                        artigos = removeArtigosAfterCheckout();
-                        listaArtigosListener.onGetListaArtigos(artigos);                           //remove os artigos do carrinho
-                        //remove os artigos que foram vendidos
-
-
+                               //remove os artigos do carrinho
                         carrinho.getLinhasCarrinho().clear();
+
+                        refreshArtigosListener.onRefreshListaArtigos();
                         cartCountRefreshListener.onRefreshCarrinho(carrinho);
-                        checkoutListener.onOrderDetails(venda);
+                        checkoutListener.onOrderDetails(fatura);
                     }
 
                 }
@@ -445,6 +454,41 @@ public class Singleton {
         }
     }
 
+    public void getAllFaturasAPI( String token, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "vendas/compras?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta faturas", response);
+
+                    faturas = Utils.parseJsonToList(response, Fatura.class);
+
+                    if (refreshFaturasListener != null) {
+                        refreshFaturasListener.onRefreshFaturas(getFaturas());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
+
 
     //PERFIL API
     public void getPerfilAPI(String token, Context context) {
@@ -461,10 +505,6 @@ public class Singleton {
                     Log.d("Resposta perfil", response);
 
                     perfil = Utils.fromJson(response, Perfil.class);
-
-                    if (perfilRefreshListener != null) {
-                        perfilRefreshListener.onRefreshPerfil(perfil);
-                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -494,7 +534,7 @@ public class Singleton {
 
                     Log.d("perfil", response);
 
-                    Perfil perfil = Utils.fromJson(response, Perfil.class);
+                    perfil = Utils.fromJson(response, Perfil.class);
                     if (perfilRefreshListener != null) {
                         perfilRefreshListener.onRefreshPerfil(perfil);
                     }
@@ -748,7 +788,7 @@ public class Singleton {
         }
     }
 
-    public void removeFavoritoAPI(String token,  Artigo artigo, Context context) {
+    public void removeFavoritoAPI(String token,  Artigo artigo, Context context, boolean refreshListaFavs) {
         if(!Utils.isConnectionInternet(context)){
             Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
         }
@@ -761,8 +801,11 @@ public class Singleton {
                     Log.d("Resposta linhacarrinho", response);
 
                     removerArtigoBD(artigo);
-                    if (refreshArtigosListener!= null) {
+                    if (refreshArtigosListener!= null ) {
                         refreshArtigosListener.onRefreshListaArtigos();
+                    }
+                    if (refreshFavoritosAfterActionListener!= null ) {
+                        refreshFavoritosAfterActionListener.onRefreshListaFavoritosAfterAction();
                     }
 
                 }
@@ -806,5 +849,29 @@ public class Singleton {
     //RETORNAR O PERFIL DO USER
     public Perfil getPerfil() {
         return perfil;
+    }
+
+    /// get historico
+
+    public  ArrayList<Fatura> getFaturas() {
+        return new ArrayList<>(faturas);
+    }
+    public ArrayList<Fatura> getFaturasEntregasCompletas() {
+        ArrayList<Fatura> faturasCompletas = new ArrayList<>();
+        for (Fatura fatura : getFaturas()) {
+            if ("COMPLETED".equals(fatura.getEstadoEncomenda())) {
+                faturasCompletas.add(fatura);
+            }
+        }
+        return faturasCompletas;
+    }
+    public ArrayList<Fatura> getFaturasIncompletas() {
+        ArrayList<Fatura> faturasCompletas = new ArrayList<>();
+        for (Fatura fatura : getFaturas()) {
+            if (!"COMPLETED".equals(fatura.getEstadoEncomenda())) {
+                faturasCompletas.add(fatura);
+            }
+        }
+        return faturasCompletas;
     }
 }

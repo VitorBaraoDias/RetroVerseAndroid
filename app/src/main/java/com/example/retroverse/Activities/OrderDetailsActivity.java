@@ -3,21 +3,16 @@ package com.example.retroverse.Activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.retroverse.Adapters.CheckoutAdapter;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
 import com.example.retroverse.Models.Artigo;
-import com.example.retroverse.Models.Venda;
+import com.example.retroverse.Models.Fatura;
 import com.example.retroverse.R;
 
 import java.util.ArrayList;
@@ -47,11 +42,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
 
-        Venda venda = (Venda) getIntent().getSerializableExtra("venda");
-        setAdapter(venda.getLinhasVenda());
-        carregarOrderDetalhes(venda);
+        Fatura fatura = (Fatura) getIntent().getSerializableExtra("venda");
+        setAdapter(fatura.getArtigos());
+        carregarOrderDetalhes(fatura);
 
-        Toast.makeText(this, String.valueOf(venda.getLinhasVenda().size()), Toast.LENGTH_SHORT).show();
     }
     private void setAdapter(ArrayList<Artigo> artigos) {
         if (listaArtigosAdapter == null) {
@@ -70,15 +64,15 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void carregarOrderDetalhes(Venda venda){
-        txtCodeOrderDetails.setText("ORDER #"+ venda.getCodigo());
-        txtDataOrderDetails.setText(venda.getDataVenda());
-        txtUsanameOrderDetails.setText(venda.getNome());
-        txtLocationOrderDetails.setText(venda.getMorada());
-        txtPostalCodeCountryCityOrderDetails.setText(venda.getCodigo() + ", " + venda.getPais() + ", " + venda.getCidade());
-        txtMetodoExpedicaoOrderDetails.setText(venda.getMetodoExpedicao());
-        txtMetodoPagamentoOrderDetails.setText(venda.getTipoPagamento());
-        txtPriceTotalOrderDetails.setText( String.valueOf(venda.getTotal()));
+    private void carregarOrderDetalhes(Fatura fatura){
+        txtCodeOrderDetails.setText("ORDER #"+ fatura.getCodigo());
+        txtDataOrderDetails.setText(fatura.getDataVenda());
+        txtUsanameOrderDetails.setText(fatura.getNome());
+        txtLocationOrderDetails.setText(fatura.getMorada());
+        txtPostalCodeCountryCityOrderDetails.setText(fatura.getCodigo() + ", " + fatura.getPais() + ", " + fatura.getCidade());
+        txtMetodoExpedicaoOrderDetails.setText(fatura.getMetodoExpedicao());
+        txtMetodoPagamentoOrderDetails.setText(fatura.getTipoPagamento());
+        txtPriceTotalOrderDetails.setText( String.valueOf(fatura.getTotal()));
     }
 
     public void finishActivity(View view) {

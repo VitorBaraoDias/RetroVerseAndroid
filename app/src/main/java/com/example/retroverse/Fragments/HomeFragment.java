@@ -24,7 +24,7 @@ import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements ListaArtigosListener, RefreshArtigosListener, ListaArtigosAdapter.OnItemClickListener, ListaArtigosAdapter.OnItemLikeClickListener, CartCountRefreshListener {
@@ -50,14 +50,15 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, Refr
         recyclerViewLatestPremiumDrops = view.findViewById(R.id.recyclerViewLatestPremiumDrops);
 
 
-        // Inicializa o adaptador com a lista vazia
-        Singleton.getInstance(getActivity()).setArtigosListener(this);
-        Singleton.getInstance(getActivity()).setArtigosRefreshListener(this);
-        Singleton.getInstance(getActivity()).setCartCountRefreshListener(this);
+        if (getContext() != null) {
+            Singleton.getInstance(getActivity()).setArtigosListener(this);
+            Singleton.getInstance(getActivity()).setArtigosRefreshListener(this);
+            Singleton.getInstance(getActivity()).setCartCountRefreshListener(this);
 
-        // Configura o listener de clique no adaptador não premium
-        Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getActivity()), null, null, null, null, null, getActivity());
-        Singleton.getInstance(getActivity()).getCartApi(Utils.getToken(getActivity()), getContext());
+            Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getActivity()), null, null, null, null, null, getActivity());
+            Singleton.getInstance(getActivity()).getCartApi(Utils.getToken(getActivity()), getContext());
+        }
+
 
 
         imgCartHome.setOnClickListener(v -> {
@@ -132,7 +133,7 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, Refr
     public void onItemLikeClick(Artigo artigo, int position) {
 
         if(artigo.isLiked()){ //SE FOR TRUE IRA ELIMINAR O FAVORITO
-            Singleton.getInstance(getActivity()).removeFavoritoAPI(Utils.getToken(getActivity()), artigo, getActivity());
+            Singleton.getInstance(getActivity()).removeFavoritoAPI(Utils.getToken(getActivity()), artigo, getActivity(), false);
 
         }
         else{
@@ -142,7 +143,8 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, Refr
 
     @Override
     public void onRefreshListaArtigos() {
-        Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getActivity()), null, null, null, null, null, getActivity());
-
+        if (getContext() != null) {
+            Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getContext()), null, null, null, null, null, getActivity());
+        }
     }
 }

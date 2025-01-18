@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#D3D3D3"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvPrimeiro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Texto 1"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginStart="20dp"
+        android:layout_gravity="start" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvSegundo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Texto 2"
+        android:textStyle="bold"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tvTerceiro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Texto 3"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="end" />
+
+</LinearLayout>

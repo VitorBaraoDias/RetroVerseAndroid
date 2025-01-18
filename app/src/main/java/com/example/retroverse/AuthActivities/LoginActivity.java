@@ -16,7 +16,6 @@ import com.example.retroverse.MenuActivity;
 import com.example.retroverse.Modals.Modal;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity implements AuthListener {
@@ -67,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements AuthListener {
 
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
+        finish();
 
     }
     // Método para mostrar o loading

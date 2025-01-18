@@ -3,20 +3,18 @@ package com.example.retroverse;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.retroverse.Fragments.HomeFragment;
 import com.example.retroverse.Fragments.ListaFavoritosFragment;
 import com.example.retroverse.Fragments.ProfileFragment;
+import com.example.retroverse.Singleton.Singleton;
+import com.example.retroverse.Utils.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +33,8 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
 
         navigationView.setOnNavigationItemSelectedListener(this);
         carregarFragmentoInicial();
+
+        carregarInformacoesApi();
     }
     private boolean carregarFragmentoInicial() {
         Menu menu = navigationView.getMenu();
@@ -43,6 +43,11 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
         return onNavigationItemSelected(item);
     }
 
+
+    private void carregarInformacoesApi(){
+        Singleton.getInstance(this).getPerfilAPI(Utils.getToken(this), this);
+
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment = null;
@@ -59,8 +64,13 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
             fragment = new ProfileFragment();
         }
 
-        if(fragment != null)
-            fragmentManager.beginTransaction().replace(R.id.contentFragmentMenu ,fragment).commit();
+        if (fragment != null) {
+
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.contentFragmentMenu, fragment)
+                    .commit();
+        }
 
         return true;
     }

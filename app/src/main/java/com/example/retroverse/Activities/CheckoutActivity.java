@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +24,10 @@ import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.Models.Metodoexpedicao;
 import com.example.retroverse.Models.Tipopagamento;
-import com.example.retroverse.Models.Venda;
+import com.example.retroverse.Models.Fatura;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -189,10 +188,10 @@ public class CheckoutActivity extends AppCompatActivity implements ShippingAddre
     }
 
     @Override
-    public void onOrderDetails(Venda venda) {
+    public void onOrderDetails(Fatura fatura) {
 
         Intent intent = new Intent(this, OrderDetailsActivity.class);
-        intent.putExtra("venda", venda);
+        intent.putExtra("venda", fatura);
         startActivity(intent);
         finish();
 

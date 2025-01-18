@@ -1,7 +1,6 @@
 package com.example.retroverse.bd;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,8 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.retroverse.Models.Artigo;
-import com.example.retroverse.Models.Carrinho;
-import com.example.retroverse.Utils;
+import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -307,7 +307,7 @@
                 app:srcCompat="@drawable/rounded_contacts_product_24" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/txtUsernamePerfiMarketplace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -328,9 +328,9 @@
                 android:paddingBottom="0dp"
                 android:text="ASK A QUESTION"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView21"
-                app:layout_constraintStart_toEndOf="@+id/textView21"
-                app:layout_constraintTop_toTopOf="@+id/textView21" />
+                app:layout_constraintBottom_toBottomOf="@+id/txtUsernamePerfiMarketplace"
+                app:layout_constraintStart_toEndOf="@+id/txtUsernamePerfiMarketplace"
+                app:layout_constraintTop_toTopOf="@+id/txtUsernamePerfiMarketplace" />
 
             <TextView
                 android:id="@+id/txtQuantidadeReviewsArtigoMarketplace"

@@ -2,9 +2,10 @@ package com.example.retroverse.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Perfil {
+public class Perfil implements Serializable {
     private int id;
     private String descricao;
     private String username;
