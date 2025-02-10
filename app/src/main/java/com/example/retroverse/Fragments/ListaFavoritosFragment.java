@@ -74,7 +74,13 @@
                 listaFavoritosAdapter = new ListaArtigosAdapter(this.listaArtigos, getActivity(), true);
 
                 listaFavoritosAdapter.setOnItemLikeClickListener(this);
-                recyclerViewFavoritos.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                if (isAdded()) {
+                    int columnCount = getResources().getConfiguration().screenWidthDp / 180;
+                    if (columnCount < 2) columnCount = 2;
+
+                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), columnCount);
+                    recyclerViewFavoritos.setLayoutManager(layoutManager);
+                }
                 recyclerViewFavoritos.setItemAnimator(new DefaultItemAnimator());
                 recyclerViewFavoritos.setAdapter(listaFavoritosAdapter);
 

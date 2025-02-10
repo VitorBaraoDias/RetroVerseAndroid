@@ -14,63 +14,76 @@
         android:background="@color/white">
 
         <!-- Botão de Voltar -->
-        <ImageView
-            android:id="@+id/imgBackMainActivity2"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="64dp"
-            android:rotationY="-180"
-            android:onClick="finishaActivity"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/rounded_arrow_right_alt_24" />
         <!-- Texto "1/" -->
 
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:fontFamily="@font/roboto"
-            android:text="1/"
-            app:layout_constraintBottom_toBottomOf="@+id/imgBackMainActivity2"
-            app:layout_constraintEnd_toStartOf="@+id/txtDetalhesartigoLoja"
-            app:layout_constraintTop_toTopOf="@+id/imgBackMainActivity2"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <!-- Texto "2" -->
-        <TextView
-            android:id="@+id/txtDetalhesartigoLoja"
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
-            android:text="2"
-            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+            app:cardCornerRadius="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgBackMainActivity2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
+            app:layout_constraintTop_toTopOf="@+id/imgBackMainActivity2"
+            app:layout_constraintVertical_bias="0.0">
 
-        <!-- Imagem Principal -->
-        <ImageView
-            android:id="@+id/imgPrimeiraImagemDetalhesLoja"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:text="1/"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtDetalhesFotoartigoLoja"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                    app:layout_constraintStart_toEndOf="@+id/textView12"
+                    app:layout_constraintTop_toTopOf="@+id/textView12" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Texto "2" -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerDetalhesLoja"
             android:layout_width="0dp"
-            android:layout_height="350dp"
-            android:layout_marginStart="-15dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="-15dp"
-            android:scaleType="fitCenter"
+            android:layout_height="440dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgBackMainActivity2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="64dp"
+            android:onClick="finishaActivity"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/windbreaker_placeholder" />
+            app:srcCompat="@drawable/back_img" />
+
+        <!-- Imagem Principal -->
 
         <!-- Layout sobrepondo a imagem -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/overlappingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="-25dp"
             android:background="@drawable/card_detalhes_artigo"
             android:padding="24dp"
             android:paddingTop="28dp"
@@ -78,32 +91,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgPrimeiraImagemDetalhesLoja"
+            app:layout_constraintTop_toBottomOf="@+id/viewPagerDetalhesLoja"
             app:layout_constraintVertical_bias="1.0">
 
             <!-- Conteúdo rolável dentro do layout sobreposto -->
 
             <TextView
                 android:id="@+id/txtDetailsNomeLoja"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="60dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_bold"
                 android:maxLines="1"
-                android:text="CORTEIZ SHOTTA JACKET"
+                android:text="CORTEIZ"
                 android:textColor="@color/black"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                app:layout_constraintEnd_toStartOf="@+id/imgLikeLojaPlaceDetails"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/imgLikeLojaPlaceDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
+                android:onClick="addLikeItemLoja"
                 app:layout_constraintBottom_toBottomOf="@+id/txtDetailsNomeLoja"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/txtDetailsNomeLoja"
@@ -274,6 +288,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+            <ImageView
+                android:id="@+id/imgInfoPremiumStatusArtigo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-1dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/txtDetailsNomeLoja"
+                app:layout_constraintTop_toTopOf="@+id/txtDetailsNomeLoja"
+                app:srcCompat="@drawable/premium_user_verified" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

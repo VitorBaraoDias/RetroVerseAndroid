@@ -9,7 +9,7 @@
         android:paddingTop="40dp"
         android:paddingRight="20dp"
         android:paddingBottom="20dp"
-        tools:context=".HistoricoActivity">
+        tools:context=".Activities.HistoricoActivity">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfileImgListaFavoritos"

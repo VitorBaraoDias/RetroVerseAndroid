@@ -20,10 +20,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.retroverse.Activities.ArtigoDetailsLojaActivity;
 import com.example.retroverse.Activities.MeuArtigoDetailsActivity;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
-import com.example.retroverse.HistoricoActivity;
+import com.example.retroverse.Activities.HistoricoActivity;
 import com.example.retroverse.Listeners.PerfilRefreshListener;
 import com.example.retroverse.MainActivity;
 import com.example.retroverse.Models.Artigo;

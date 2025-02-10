@@ -2,6 +2,7 @@ package com.example.retroverse.Activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -11,19 +12,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
+import com.example.retroverse.Adapters.ListaOrderDetailsAdapter;
+import com.example.retroverse.Listeners.RefreshStateListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Fatura;
+import com.example.retroverse.Models.Linhavenda;
 import com.example.retroverse.R;
+import com.example.retroverse.Singleton.Singleton;
+import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
 
-public class OrderDetailsActivity extends AppCompatActivity {
+public class OrderDetailsActivity extends AppCompatActivity implements ListaOrderDetailsAdapter.OnItemClickListener, RefreshStateListener {
 
     TextView txtDataOrderDetails, txtUsanameOrderDetails, txtLocationOrderDetails,
             txtPostalCodeCountryCityOrderDetails, txtPriceTotalOrderDetails, txtMetodoExpedicaoOrderDetails,
             txtMetodoPagamentoOrderDetails, txtCodeOrderDetails;
     RecyclerView recyclerView;
-    private ListaArtigosAdapter listaArtigosAdapter;
+    private ListaOrderDetailsAdapter listaArtigosAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +49,17 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
 
         Fatura fatura = (Fatura) getIntent().getSerializableExtra("venda");
-        setAdapter(fatura.getArtigos());
+        setAdapter(fatura.getLinhasVenda());
         carregarOrderDetalhes(fatura);
 
+
+        Singleton.getInstance(this).setRefreshStateListener(this);
     }
-    private void setAdapter(ArrayList<Artigo> artigos) {
+    private void setAdapter(ArrayList<Linhavenda> linhavendas) {
         if (listaArtigosAdapter == null) {
 
-            listaArtigosAdapter = new ListaArtigosAdapter(artigos, this, false);
-
+            listaArtigosAdapter = new ListaOrderDetailsAdapter(linhavendas, this, false);
+            listaArtigosAdapter.setOnItemClickListener(this);
 
             ///normal
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -77,5 +85,17 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
     public void finishActivity(View view) {
         finish();
+    }
+
+    @Override
+    public void onItemClick(Linhavenda linhavenda, int position, TextView txt, Button btn) {
+        Singleton.getInstance(this).putStateOrderAPI(Utils.getToken(this), linhavenda.getId(),  this);
+        txt.setText("COMPLETED");
+        btn.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRefreshState() {
+        Singleton.getInstance(this).getAllFaturasAPI(Utils.getToken(this), this);
     }
 }

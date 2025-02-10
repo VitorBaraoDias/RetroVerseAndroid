@@ -33,6 +33,10 @@ public class Perfil implements Serializable {
         return this.username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String setCaminhofotoperfil(String caminhofotoperfil) {
         return this.caminhofotoperfil = caminhofotoperfil;
     }

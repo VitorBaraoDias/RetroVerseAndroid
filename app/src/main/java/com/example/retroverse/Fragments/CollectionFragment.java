@@ -2,11 +2,16 @@ package com.example.retroverse.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -23,9 +28,14 @@ import com.example.retroverse.Listeners.ListaArtigosListener;
 import com.example.retroverse.Listeners.RefreshArtigosListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
+import com.example.retroverse.Models.Categoria;
+import com.example.retroverse.Models.Estado;
+import com.example.retroverse.Models.Marca;
+import com.example.retroverse.Models.Tamanho;
 import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Utils.Utils;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -38,6 +48,9 @@ public class CollectionFragment extends Fragment implements ListaArtigosListener
     private ListaArtigosAdapter listaArtigosAdapter, listaArtigosAdapterPremium;
 
     ArrayList<Artigo> listaArtigos, listaArtigoPremium;
+    TextInputLayout eArtigoPesquisar;
+
+    AutoCompleteTextView dropdown_menuMarcaPesquisar, dropdown_menuTipoPesquisar;
 
 
     @Override
@@ -49,6 +62,9 @@ public class CollectionFragment extends Fragment implements ListaArtigosListener
         txtQuantCartHome = view.findViewById(R.id.txtQuantCartHome);
         imgCartHome = view.findViewById(R.id.imgCartHome);
         recyclerView = view.findViewById(R.id.recyclerViewMyItems);
+        dropdown_menuMarcaPesquisar = view.findViewById(R.id.dropdown_menuMarcaPesquisar);
+        dropdown_menuTipoPesquisar = view.findViewById(R.id.dropdown_menuTipoPesquisar);
+        eArtigoPesquisar = view.findViewById(R.id.eArtigoPesquisar);
 
 
         if (getContext() != null) {
@@ -61,12 +77,34 @@ public class CollectionFragment extends Fragment implements ListaArtigosListener
         }
 
 
-
+        carregarInfoDropDown();
         imgCartHome.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CarrinhoActivity.class);
             startActivity(intent);
         });
 
+
+
+        eArtigoPesquisar.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                pesquisar();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        dropdown_menuMarcaPesquisar.setOnItemClickListener((parent, view, position, id) -> {
+            pesquisar();
+        });
+        dropdown_menuTipoPesquisar.setOnItemClickListener((parent, view, position, id) -> {
+            pesquisar();
+        });
         return view;
     }
 
@@ -76,11 +114,9 @@ public class CollectionFragment extends Fragment implements ListaArtigosListener
     }
 
     private void setAdapter() {
-        if (listaArtigosAdapter != null && listaArtigosAdapterPremium != null) {
+        if (listaArtigosAdapter != null) {
             listaArtigosAdapter.updateData(this.listaArtigos);
-            listaArtigosAdapterPremium.updateData(this.listaArtigoPremium);
             listaArtigosAdapter.notifyDataSetChanged();
-            listaArtigosAdapterPremium.notifyDataSetChanged();
         } else {
             // Criação do adaptador (primeira inicialização)
             listaArtigosAdapter = new ListaArtigosAdapter(this.listaArtigos, getActivity(), true);
@@ -91,9 +127,15 @@ public class CollectionFragment extends Fragment implements ListaArtigosListener
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(listaArtigosAdapter);
-
         }
 
+    }
+    private void carregarInfoDropDown(){
+        ArrayAdapter<Categoria> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Singleton.getInstance(getActivity()).getCategorias());
+        dropdown_menuTipoPesquisar.setAdapter(adapter);
+
+        ArrayAdapter<Marca> adapterMarca = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Singleton.getInstance(getActivity()).getMarcas());
+        dropdown_menuMarcaPesquisar.setAdapter(adapterMarca);
     }
     @Override
     public void onGetListaArtigos(ArrayList<Artigo> listaArtigos) {
@@ -139,5 +181,12 @@ public class CollectionFragment extends Fragment implements ListaArtigosListener
         if (getContext() != null) {
             Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getContext()), null, null, null, null, null, getActivity());
         }
+    }
+    private void pesquisar(){
+        String nome = eArtigoPesquisar.getEditText().getText().toString();
+        String marca = dropdown_menuMarcaPesquisar.getText().toString();
+        String tipo = dropdown_menuTipoPesquisar.getText().toString();
+        Toast.makeText(getActivity(), marca, Toast.LENGTH_SHORT).show();
+        setAdapter();
     }
 }

@@ -60,26 +60,31 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, Refr
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //layout
         txtQuantCartHome = view.findViewById(R.id.txtQuantCartHome);
         imgCartHome = view.findViewById(R.id.imgCartHome);
         recyclerView = view.findViewById(R.id.recyclerViewMyItems);
         recyclerViewLatestPremiumDrops = view.findViewById(R.id.recyclerViewLatestPremiumDrops);
         btnGoCollection = view.findViewById(R.id.btnGoCollection);
+        //layout
 
         if (getContext() != null) {
+            //Implementação dos listeners
             Singleton.getInstance(getActivity()).setArtigosListener(this);
             Singleton.getInstance(getActivity()).setArtigosRefreshListener(this);
             Singleton.getInstance(getActivity()).setCartCountRefreshListener(this);
+            //Implementação dos listeners
 
+            //requisição API
             Singleton.getInstance(getActivity()).getAllArtigosAPI(Utils.getToken(getActivity()), null, null, null, null, null, getActivity());
             Singleton.getInstance(getActivity()).getCartApi(Utils.getToken(getActivity()), getContext());
+            //requisição API
         }
 
         imgCartHome.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CarrinhoActivity.class);
             startActivity(intent);
         });
-
         btnGoCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +121,7 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, Refr
 
 
             listaArtigosAdapterPremium.setOnItemLikeClickListener(this);
+            listaArtigosAdapterPremium.setOnItemClickListener(this);
 
 
             recyclerViewLatestPremiumDrops.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -153,11 +159,12 @@ public class HomeFragment extends Fragment implements ListaArtigosListener, Refr
     @Override
     public void onItemLikeClick(Artigo artigo, int position) {
 
-        if(artigo.isLiked()){ //SE FOR TRUE IRA ELIMINAR O FAVORITO
+        if(artigo.isLiked()){
+            // se o estado de like artigo for verdadeira, então ira remover dos favortios
             Singleton.getInstance(getActivity()).removeFavoritoAPI(Utils.getToken(getActivity()), artigo, getActivity(), false);
-
         }
         else{
+            // se o estado de like artigo for falso, então ira adicionar dos favortios
             Singleton.getInstance(getActivity()).addFavoritoAPI(Utils.getToken(getActivity()), artigo.getId(), getActivity());
         }
     }

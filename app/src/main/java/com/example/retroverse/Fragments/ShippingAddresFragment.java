@@ -55,7 +55,7 @@ public class ShippingAddresFragment extends DialogFragment {
         edtPostalCodeLayout = rootView.findViewById(R.id.txtPostalCodeLayout);
         botaoCancelar = (Button) rootView.findViewById(R.id.btnCancelShippingDetails);
         botaoConfirm = (Button) rootView.findViewById(R.id.btnConfimrShippingDetails);
-        TextInputLayout txtNameCheckoutLayout = rootView.findViewById(R.id.txtNameCheckoutLayout);
+        TextInputLayout txtNameCheckoutLayout = rootView.findViewById(R.id.etProfileDescriptionLayout);
         TextInputLayout txtCountryCheckoutLayout = rootView.findViewById(R.id.txtCountryCheckoutLayout);
         TextInputLayout txtCidadeCheckoutLayout = rootView.findViewById(R.id.txtCidadeCheckoutLayout);
         TextInputLayout txtAddresLineLayout = rootView.findViewById(R.id.txtAddresLineLayout);
@@ -126,7 +126,7 @@ public class ShippingAddresFragment extends DialogFragment {
     }
 
     private boolean validateAllFields() {
-        TextInputLayout txtNameCheckoutLayout = rootView.findViewById(R.id.txtNameCheckoutLayout);
+        TextInputLayout txtNameCheckoutLayout = rootView.findViewById(R.id.etProfileDescriptionLayout);
         TextInputLayout txtCountryCheckoutLayout = rootView.findViewById(R.id.txtCountryCheckoutLayout);
         TextInputLayout txtCidadeCheckoutLayout = rootView.findViewById(R.id.txtCidadeCheckoutLayout);
         TextInputLayout txtAddresLineLayout = rootView.findViewById(R.id.txtAddresLineLayout);

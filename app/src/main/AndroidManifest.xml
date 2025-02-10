@@ -19,10 +19,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.VenderArtigoActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.DetalheFaturaActivity"
             android:exported="false" />
         <activity
-            android:name=".HistoricoActivity"
+            android:name=".Activities.HistoricoActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.ArtigoMarketPlaceDetailsActivity"
@@ -44,7 +47,8 @@
             android:exported="false" />
         <activity
             android:name=".MenuActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".AuthActivities.CreateAccountActivity"
             android:exported="false" />

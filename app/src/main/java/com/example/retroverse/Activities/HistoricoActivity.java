@@ -1,4 +1,4 @@
-package com.example.retroverse;
+package com.example.retroverse.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.retroverse.Activities.DetalheFaturaActivity;
-import com.example.retroverse.Activities.OrderDetailsActivity;
 import com.example.retroverse.Adapters.HistoricoAdapter;
 import com.example.retroverse.Listeners.RefreshFaturasListener;
 import com.example.retroverse.Models.Fatura;
+import com.example.retroverse.R;
 import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Utils.Utils;
 

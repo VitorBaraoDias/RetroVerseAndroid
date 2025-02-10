@@ -172,6 +172,14 @@ public class Artigo implements Serializable {
         }
         return null;
     }
+    public String getBaseUrlFoto() {
+        if (fotos != null && !fotos.isEmpty()) {
+            String dynamicServerIp = Singleton.getInstance(null).getDynamicServerIp();
+            return "http://" + dynamicServerIp + "/RetroVerse/frontend/web/uploads/img-artigos/";
+        }
+        return null;
+    }
+
 
 
     public String getPrecoFormatado() {
