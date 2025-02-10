@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.retroverse.Adapters.ImageSliderAdapter;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
 import com.example.retroverse.Activities.ArtigoMarketPlaceDetailsActivity;
 import com.example.retroverse.Listeners.CartListener;
@@ -25,6 +27,7 @@ import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MeuArtigoDetailsActivity extends AppCompatActivity {
@@ -33,23 +36,23 @@ public class MeuArtigoDetailsActivity extends AppCompatActivity {
     ListaArtigosAdapter listaArtigosAdapter;
     Artigo artigo;
 
-    ImageView imgPrimeiraImagemDetalhesLoja;
     TextView txtDetailsNomeLoja, txdDetailsMarcaLoja, txtPrecoDetailsLoja, txtCondicaoDetailsLoja, txtDetailsSizeLoja, txtDetailsDescricaoLoja;
-    public static final int ADD = 100, EDIT = 200, DELETE = 300;
 
+    ViewPager2 viewPagerMeuArtigo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_meu_artigo_details);
 
-        txtDetailsNomeLoja = findViewById(R.id.txtDetailsNomeLoja);
-        txdDetailsMarcaLoja = findViewById(R.id.txdDetailsMarcaLoja);
-        txtPrecoDetailsLoja = findViewById(R.id.txtPrecoDetailsLoja);
-        txtCondicaoDetailsLoja = findViewById(R.id.txtCondicaoDetailsLoja);
-        txtDetailsSizeLoja = findViewById(R.id.txtDetailsSizeLoja);
-        txtDetailsDescricaoLoja = findViewById(R.id.txtDetailsDescricaoLoja);
-        imgPrimeiraImagemDetalhesLoja = findViewById(R.id.imgPrimeiraImagemDetalhesLoja);
+        txtDetailsNomeLoja = findViewById(R.id.txtTituloMeuArtigo);
+        txdDetailsMarcaLoja = findViewById(R.id.txdDetailsMarcaMeuArtigo);
+        txtPrecoDetailsLoja = findViewById(R.id.txtPrecoDetailsMeuArtigo);
+        txtCondicaoDetailsLoja = findViewById(R.id.txtCondicaoDetailsMeuArtigo);
+        txtDetailsSizeLoja = findViewById(R.id.txtDetailsSizeMeuArtigo);
+        txtDetailsDescricaoLoja = findViewById(R.id.txtDetailsDescricaoMeuArtigo);
+        viewPagerMeuArtigo = findViewById(R.id.viewPagerMeuArtigo);
+
 
 
 
@@ -68,10 +71,12 @@ public class MeuArtigoDetailsActivity extends AppCompatActivity {
         txtDetailsSizeLoja.setText(artigo.getTamanho());
         txtDetailsDescricaoLoja.setText(artigo.getDescricao());
 
-        Glide.with(this)
-                .load(artigo.getPrimeiraFotoUrl())
-                .placeholder(R.drawable.image)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgPrimeiraImagemDetalhesLoja);
+        List<String> images = artigo.getFotos();
+        ImageSliderAdapter adapter = new ImageSliderAdapter(this, images, artigo.getBaseUrlFoto());
+        viewPagerMeuArtigo.setAdapter(adapter);
+    }
+
+    public void finishaActivity(View view) {
+        finish();
     }
 }

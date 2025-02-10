@@ -17,7 +17,6 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginEnd="28dp"
             app:cardCornerRadius="24dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgBackMainActivity3"
@@ -44,7 +43,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/txtDetalhesartigoMarketplace"
+                    android:id="@+id/txtDetalhesFotoartigoMarketplace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2"
@@ -55,49 +54,47 @@
 
         </androidx.cardview.widget.CardView>
 
-        <ImageView
-            android:id="@+id/imgBackMainActivity3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="44dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="backMenuActivity"
-            app:srcCompat="@drawable/back_img" />
         <!-- Texto "1/" -->
 
         <!-- Texto "2" -->
 
         <!-- Imagem Principal -->
-        <ImageView
-            android:id="@+id/imgPrimeiraImagemDetalhesMarketplace"
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerDetalhesLoja"
             android:layout_width="0dp"
-            android:layout_height="350dp"
-            android:layout_marginStart="-15dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="-15dp"
-            android:scaleType="fitCenter"
+            android:layout_height="490dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/windbreaker_placeholder" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Layout sobrepondo a imagem -->
+        <ImageView
+            android:id="@+id/imgBackMainActivity3"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="45dp"
+            android:onClick="backMenuActivity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/back_img" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/overlappingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp"
+            android:layout_marginTop="-35dp"
             android:background="@drawable/card_detalhes_artigo"
+            android:elevation="10dp"
             android:padding="24dp"
             android:paddingTop="28dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgPrimeiraImagemDetalhesMarketplace">
+            app:layout_constraintTop_toBottomOf="@+id/viewPagerDetalhesLoja"
+            app:layout_constraintVertical_bias="1.0">
 
             <!-- Conteúdo rolável dentro do layout sobreposto -->
 
@@ -113,16 +110,17 @@
                 android:text="CORTEIZ SHOTTA JACKET"
                 android:textColor="@color/black"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                app:layout_constraintEnd_toStartOf="@+id/imgLikeMarketPlaceDetails"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imgPerfilMarketplace" />
 
             <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/imgLikeMarketPlaceDetails"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:backgroundTint="@color/colorPrimary"
+                android:onClick="addLikeItemMarketplace"
                 app:layout_constraintBottom_toBottomOf="@+id/txtDetailsNomeMarketplace"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/txtDetailsNomeMarketplace"
@@ -287,7 +285,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRelatedItensMarketplace"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="240dp"
                 android:layout_marginStart="-20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="-20dp"

@@ -12,11 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.retroverse.Adapters.ImageSliderAdapter;
 import com.example.retroverse.Adapters.ListaArtigosAdapter;
 import com.example.retroverse.Listeners.CartListener;
+import com.example.retroverse.Listeners.RefreshEstadoLike;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.R;
@@ -24,16 +27,20 @@ import com.example.retroverse.Singleton.Singleton;
 import com.example.retroverse.Utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class ArtigoDetailsLojaActivity extends AppCompatActivity implements ListaArtigosAdapter.OnItemClickListener, CartListener{
+public class ArtigoDetailsLojaActivity extends AppCompatActivity implements ListaArtigosAdapter.OnItemClickListener, CartListener, RefreshEstadoLike {
 
     RecyclerView recyclerViewRelatedItensLoja;
     ListaArtigosAdapter listaArtigosAdapter;
     Artigo artigo;
+    ImageView imgLikeLojaPlaceDetails, imgInfoPremiumStatusArtigo;
+    TextView txtDetailsNomeLoja, txdDetailsMarcaLoja, txtPrecoDetailsLoja,
+            txtCondicaoDetailsLoja, txtDetailsSizeLoja, txtDetailsDescricaoLoja, txtDetalhesFotoartigoLoja;
 
-    ImageView imgPrimeiraImagemDetalhesLoja;
-    TextView txtDetailsNomeLoja, txdDetailsMarcaLoja, txtPrecoDetailsLoja, txtCondicaoDetailsLoja, txtDetailsSizeLoja, txtDetailsDescricaoLoja;
+    ViewPager2 viewPager;
+
     public static final int ADD = 100, EDIT = 200, DELETE = 300;
 
     @Override
@@ -49,15 +56,21 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
         txtCondicaoDetailsLoja = findViewById(R.id.txtCondicaoDetailsLoja);
         txtDetailsSizeLoja = findViewById(R.id.txtDetailsSizeLoja);
         txtDetailsDescricaoLoja = findViewById(R.id.txtDetailsDescricaoLoja);
-        imgPrimeiraImagemDetalhesLoja = findViewById(R.id.imgPrimeiraImagemDetalhesLoja);
+        txtDetalhesFotoartigoLoja = findViewById(R.id.txtDetalhesFotoartigoLoja);
+        imgInfoPremiumStatusArtigo = findViewById(R.id.imgInfoPremiumStatusArtigo);
+        imgLikeLojaPlaceDetails = findViewById(R.id.imgLikeLojaPlaceDetails);
+        viewPager = findViewById(R.id.viewPagerDetalhesLoja);
 
 
 
         int id = getIntent().getIntExtra("ID", 0);
         artigo = Singleton.getInstance(this).getArtigo(id);
+        Singleton.getInstance(this).setRefreshEstadoLike(this);
 
 
         carregarArtigo();
+        setImageLike(artigo);
+
         setAdapter(Singleton.getInstance(this).filterNonPremiumArticles(id));
     }
 
@@ -69,12 +82,15 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
         txdDetailsMarcaLoja.setText(artigo.getMarca());
         txtDetailsSizeLoja.setText(artigo.getTamanho());
         txtDetailsDescricaoLoja.setText(artigo.getDescricao());
+        txtDetalhesFotoartigoLoja.setText(String.valueOf(artigo.getFotos().size()));
 
-        Glide.with(this)
-                .load(artigo.getPrimeiraFotoUrl())
-                .placeholder(R.drawable.image)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgPrimeiraImagemDetalhesLoja);
+        List<String> images = artigo.getFotos();
+        ImageSliderAdapter adapter = new ImageSliderAdapter(this, images, artigo.getBaseUrlFoto());
+        viewPager.setAdapter(adapter);
+
+        if(artigo.isPremium()){
+            imgInfoPremiumStatusArtigo.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setAdapter(ArrayList<Artigo> artigos) {
@@ -126,5 +142,28 @@ public class ArtigoDetailsLojaActivity extends AppCompatActivity implements List
 
     public void finishaActivity(View view) {
         finish();
+    }
+
+    public void addLikeItemLoja(View view) {
+        if(artigo.isLiked()){
+            Singleton.getInstance(this).removeFavoritoAPI(Utils.getToken(this), artigo, this, false);
+        }
+        else{
+            Singleton.getInstance(this).addFavoritoAPI(Utils.getToken(this), artigo.getId(), this);
+        }
+    }
+
+    @Override
+    public void onRefreshEstadoLike(Artigo artigo) {
+        this.artigo = artigo;
+        setImageLike(artigo);
+
+    }
+    private void setImageLike(Artigo artigo){
+        if (artigo.isLiked()) {
+            imgLikeLojaPlaceDetails.setImageResource(R.drawable.group_170);
+        } else {
+            imgLikeLojaPlaceDetails.setImageResource(R.drawable.outline_heart_plus_24);
+        }
     }
 }

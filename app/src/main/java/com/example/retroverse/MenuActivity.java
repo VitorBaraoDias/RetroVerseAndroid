@@ -1,5 +1,6 @@
 package com.example.retroverse;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.retroverse.Activities.ArtigoDetailsLojaActivity;
+import com.example.retroverse.Activities.VenderArtigoActivity;
 import com.example.retroverse.Fragments.CollectionFragment;
 import com.example.retroverse.Fragments.HomeFragment;
 import com.example.retroverse.Fragments.ListaFavoritosFragment;
@@ -48,6 +51,10 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
 
     private void carregarInformacoesApi(){
         Singleton.getInstance(this).getPerfilAPI(Utils.getToken(this), this);
+        Singleton.getInstance(this).getAllACategoriasAPI(Utils.getToken(this), this);
+        Singleton.getInstance(this).getAllMarcasAPI(Utils.getToken(this), this);
+        Singleton.getInstance(this).getAllEstadosAPI(Utils.getToken(this), this);
+        Singleton.getInstance(this).getAllTamanhosAPI(Utils.getToken(this), this);
 
     }
     @Override
@@ -61,7 +68,13 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
         else if(item.getItemId() == R.id.navHeart) {
             setTitle(item.getTitle());
             fragment = new ListaFavoritosFragment();
-        }else if(item.getItemId() == R.id.navProfile) {
+        }
+        else if(item.getItemId() == R.id.navVender) {
+            setTitle(item.getTitle());
+            Intent intent = new Intent(this, VenderArtigoActivity.class);
+            startActivity(intent);
+        }
+        else if(item.getItemId() == R.id.navProfile) {
             setTitle(item.getTitle());
             fragment = new ProfileFragment();
         } else if(item.getItemId() == R.id.navCollection) {
@@ -69,11 +82,7 @@ public class MenuActivity extends AppCompatActivity implements BottomNavigationV
             fragment = new CollectionFragment(); }
 
         if (fragment != null) {
-
-
-            fragmentManager.beginTransaction()
-                    .replace(R.id.contentFragmentMenu, fragment)
-                    .commit();
+            fragmentManager.beginTransaction().replace(R.id.contentFragmentMenu, fragment).commit();
         }
 
         return true;

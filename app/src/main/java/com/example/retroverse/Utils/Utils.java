@@ -31,6 +31,7 @@ public class Utils {
         if (error.networkResponse != null) {
             // Extrair o código de status HTTP
             int statusCode = error.networkResponse.statusCode;
+            Log.d("erro total", String.valueOf(error.networkResponse.data));
 
             try {
                 String responseBody = new String(error.networkResponse.data, "UTF-8");
@@ -42,7 +43,6 @@ public class Utils {
 
             } catch (JSONException | UnsupportedEncodingException e) {
                 e.printStackTrace();
-                // Caso não consiga processar o erro JSON ou a resposta
                 Toast.makeText(context, "Erro ao processar a resposta do servidor", Toast.LENGTH_LONG).show();
             }
 
@@ -50,7 +50,6 @@ public class Utils {
             handleNetworkError(error, context);
         }
     }
-
     private static String getErrorMessage(int statusCode, JSONObject jsonResponse) {
         String errorMessage = "Erro desconhecido";
 
@@ -79,7 +78,6 @@ public class Utils {
 
         return errorMessage;
     }
-
     private static void handleNetworkError(VolleyError error, Context context) {
         if (error instanceof TimeoutError) {
             Toast.makeText(context, "Erro: O tempo de resposta expirou", Toast.LENGTH_LONG).show();
@@ -99,19 +97,16 @@ public class Utils {
         }
         return token;
     }
-
     ///artigos
     public static <T> ArrayList<T> parseJsonToList(String jsonResponse, Class<T> typeClass) {
         Gson gson = new Gson();
         Type listType = TypeToken.getParameterized(ArrayList.class, typeClass).getType();
         return gson.fromJson(jsonResponse, listType);
     }
-
     public static <T> T fromJson(String json, Class<T> type) {
         Gson gson = new Gson();
         return gson.fromJson(json, type);
     }
-
     ///
     public static String getToken(Context context) {
 

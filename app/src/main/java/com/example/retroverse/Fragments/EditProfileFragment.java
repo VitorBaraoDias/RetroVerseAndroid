@@ -118,22 +118,22 @@ public class EditProfileFragment extends DialogFragment {
                     profileImage = fotoUrlAtual;
                 }
 
-                    Singleton.getInstance(getActivity()).putPerfilAPI(
-                            Utils.getToken(getActivity()),
-                            getActivity(),
-                            etDescricao.getText().toString(),
-                            etLocalizacao.getText().toString(),
+                Singleton.getInstance(getActivity()).putPerfilAPI(
+                        Utils.getToken(getActivity()),
+                        getActivity(),
+                        etDescricao.getText().toString(),
+                        etLocalizacao.getText().toString(),
+                        profileImage
+                );
+
+                if (mListener != null) {
+                    mListener.onProfileEdited(
+                            etDescricao.getText().toString().trim(),
+                            etLocalizacao.getText().toString().trim(),
                             profileImage
                     );
-
-                    if (mListener != null) {
-                        mListener.onProfileEdited(
-                                etDescricao.getText().toString().trim(),
-                                etLocalizacao.getText().toString().trim(),
-                                profileImage
-                        );
-                    }
                 }
+            }
             dismiss();
         });
 
@@ -165,23 +165,21 @@ public class EditProfileFragment extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri filePath = data.getData();
-            if (filePath != null) {
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                    lastBitmap = bitmap;
-                    ivFotoPerfil.setImageBitmap(lastBitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getContext(), "Erro ao carregar imagem!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(getContext(), "Erro ao obter o arquivo selecionado!", Toast.LENGTH_SHORT).show();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+                lastBitmap = bitmap;
+
+                ImageView ivFotoPerfil = rootView.findViewById(R.id.ivProfileImg);
+                ivFotoPerfil.setImageBitmap(lastBitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Erro ao carregar imagem!", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

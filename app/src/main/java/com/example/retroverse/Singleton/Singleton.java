@@ -11,8 +11,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.retroverse.Listeners.AddArtigoListener;
 import com.example.retroverse.Listeners.AuthCreatAccountListener;
 import com.example.retroverse.Listeners.AuthListener;
 import com.example.retroverse.Listeners.CartCountRefreshListener;
@@ -23,21 +25,31 @@ import com.example.retroverse.Listeners.ListaArtigosListener;
 import com.example.retroverse.Listeners.ListaFavoritosListener;
 import com.example.retroverse.Listeners.PerfilRefreshListener;
 import com.example.retroverse.Listeners.RefreshArtigosListener;
+import com.example.retroverse.Listeners.RefreshEstadoLike;
 import com.example.retroverse.Listeners.RefreshFaturasListener;
 import com.example.retroverse.Listeners.RefreshFavoritosAfterActionListener;
+import com.example.retroverse.Listeners.RefreshStateListener;
 import com.example.retroverse.Models.Artigo;
 import com.example.retroverse.Models.Carrinho;
 import com.example.retroverse.Listeners.MetodoExpedicaoListener;
 import com.example.retroverse.Listeners.TipoPagamentoListener;
+import com.example.retroverse.Models.Categoria;
+import com.example.retroverse.Models.Estado;
+import com.example.retroverse.Models.Marca;
 import com.example.retroverse.Models.Metodoexpedicao;
 import com.example.retroverse.Models.Perfil;
+import com.example.retroverse.Models.Tamanho;
 import com.example.retroverse.Models.Tipopagamento;
 import com.example.retroverse.Models.Fatura;
 import com.example.retroverse.Utils.Utils;
 import com.example.retroverse.bd.DBHelper;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Singleton {
@@ -58,7 +70,11 @@ public class Singleton {
     private ArrayList<Artigo> artigos = new ArrayList<>();
     private ArrayList<Artigo> favoritos = new ArrayList<>();
     private ArrayList<Tipopagamento> tipopagamentos = new ArrayList<>();
+    private ArrayList<Categoria> categorias = new ArrayList<>();
+    private ArrayList<Marca> marcas = new ArrayList<>();
+    private ArrayList<Estado> estados = new ArrayList<>();
     private ArrayList<Fatura> faturas = new ArrayList<>();
+    private ArrayList<Tamanho> tamanhos = new ArrayList<>();
     private ArrayList<Metodoexpedicao> metodoexpedicaos = new ArrayList<>();
     private Carrinho carrinho;
     private Perfil perfil;
@@ -66,6 +82,9 @@ public class Singleton {
     private RefreshFaturasListener refreshFaturasListener;
     private MetodoExpedicaoListener metodoExpedicaoListener;
     private CheckoutListener checkoutListener;
+    private RefreshEstadoLike refreshEstadoLike;
+    private AddArtigoListener addArtigoListener;
+    private RefreshStateListener refreshStateListener;
 
     private DBHelper dbHelper = null;
 
@@ -103,6 +122,9 @@ public class Singleton {
     public void setPerfilRefreshListener(PerfilRefreshListener listener) {
         this.perfilRefreshListener = listener;
     }
+    public void setAddArtigoListener(AddArtigoListener listener) {
+        this.addArtigoListener = listener;
+    }
 
     public void setCreatAccountListener(AuthCreatAccountListener listener) {
         this.authCreatAccountListener = listener;
@@ -122,6 +144,9 @@ public class Singleton {
     public void setFavoritosListener(ListaFavoritosListener listener) {
         this.listaFavoritosListener = listener;
     }
+    public void setRefreshEstadoLike(RefreshEstadoLike listener) {
+        this.refreshEstadoLike = listener;
+    }
 
     public void setCartListeneristener(CartListener listener) {
         this.cartListener = listener;
@@ -137,6 +162,9 @@ public class Singleton {
     }
     public void setMetodoexpedicaoListener(MetodoExpedicaoListener listener) {
         this.metodoExpedicaoListener = listener;
+    }
+    public void setRefreshStateListener(RefreshStateListener listener) {
+        this.refreshStateListener = listener;
     }
     public void setCheckoutListener(CheckoutListener listener) {
         this.checkoutListener = listener;
@@ -156,20 +184,16 @@ public class Singleton {
         dbHelper.removerFavoritoArtigo(artigo.getId());
     }
 
-
-
     /// USER
     public void loginAPI(final String username, final String password, Context context) {
         if(!Utils.isConnectionInternet(context)){
             Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
         }
         else {
-            // Volley RequestQueue para enviar requisição HTTP
+            // requisição HTTP
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, baseUrl + "users/login", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Log.d("resposta", response );
 
                         String token = Utils.parserJsonLogin(response);
                         if (loginListener != null) {
@@ -177,6 +201,7 @@ public class Singleton {
                         }
                     }
                 }
+            //mensagem de erro
             , new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -195,7 +220,7 @@ public class Singleton {
             };
             // Configurando o RetryPolicy
             stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    15000, // Tempo de timeout em milissegundos (15 segundos)
+                    15000, // Tempo de timeout  (15 segundos)
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
             ));
@@ -411,7 +436,7 @@ public class Singleton {
     ///CHECKOUT API
 
     public void addCheckoutAPI(String token, int idmetodoexpedicao, int idtipopagamento, String nome, String codigopostal, String morada,  String pais,  String cidade, Context context){
-        // Realizando a requisição GET
+        //validação da conexão
         if(!Utils.isConnectionInternet(context)){
             Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
         }
@@ -420,13 +445,12 @@ public class Singleton {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
-                    Log.d("venda", response);
+                    //mapeamento do json para o objeto Fatura
                     Fatura fatura = Utils.fromJson(response, Fatura.class);
                     if (cartCountRefreshListener != null && checkoutListener != null && listaArtigosListener != null) {
-                               //remove os artigos do carrinho
+                        //remove os artigos do carrinho
                         carrinho.getLinhasCarrinho().clear();
-
+                        //listeners
                         refreshArtigosListener.onRefreshListaArtigos();
                         cartCountRefreshListener.onRefreshCarrinho(carrinho);
                         checkoutListener.onOrderDetails(fatura);
@@ -453,14 +477,68 @@ public class Singleton {
                     return params;
                 }
             };
+    
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    public void addArtigoAPI(String token, String nome, String descricao,
+                             String precoanuncio, int idestado, int idmarca,
+                             int idtamanho, int idcategoria, List<String> base64Images, Context context) {
+
+        // Verifica a conexão com a internet
+        if (!Utils.isConnectionInternet(context)) {
+            Toast.makeText(context, "Não tem ligação à Internet", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String url = baseUrl + "artigos?access-token=" + token;
+        try {
+            JSONObject params = new JSONObject();
+            params.put("nome", nome);
+            params.put("descricao", descricao);
+            params.put("precoanuncio", precoanuncio);
+            params.put("idestado", idestado);
+            params.put("idmarca", idmarca);
+            params.put("idcategoria", idcategoria);
+            params.put("idtamanho", idtamanho);
+            // Convertendo a lista de imagens base64 para um JSONArray
+            JSONArray imagesArray = new JSONArray(base64Images);
+            params.put("base64Images", imagesArray);
+
+            // Criando a requisição POST com JSON
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Resposta adicionarArtigos", response.toString());
+
+                            if (addArtigoListener != null) {
+                                refreshArtigosListener.onRefreshListaArtigos();
+                                addArtigoListener.onAddArtigo();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Utils.displayError(error, context);
+                        }
+                    });
+
             // Configurando o RetryPolicy
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    15000, // Tempo de timeout em milissegundos (15 segundos)
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    15000, // Timeout em milissegundos (15 segundos)
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES, // Número máximo de tentativas
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT // Fator de multiplicação
             ));
 
-            volleyQueue.add(stringRequest);
+            // Enviando a requisição para o servidor
+            volleyQueue.add(jsonObjectRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Erro ao preparar os dados", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -547,7 +625,7 @@ public class Singleton {
                 @Override
                 public void onResponse(String response) {
 
-                    Log.d("perfil", response);
+                    Log.d("perfil put", response);
 
                     perfil = Utils.fromJson(response, Perfil.class);
                     if (perfilRefreshListener != null) {
@@ -579,9 +657,39 @@ public class Singleton {
         }
     }
 
+    public void putStateOrderAPI(String token, int id, Context context){
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "vendas/orderokay/"+ id +"?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    Log.d("state", response);
+
+                    if(refreshStateListener != null){
+                        refreshStateListener.onRefreshState();
+                    }
+
+                }
+            }
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+            int socketTimeout = 30000;
+            RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            stringRequest.setRetryPolicy(policy);
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+
     //PERFIL API
-
-
     ///Metodo pagamento API
     public void getAllATiposPagamentoAPI( String token, final Context context){
         // Realizando a requisição GET
@@ -617,6 +725,101 @@ public class Singleton {
             volleyQueue.add(stringRequest);
         }
     }
+    public void getAllACategoriasAPI( String token, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "categoriaartigos?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta categorias artigos", response);
+
+                    categorias = Utils.parseJsonToList(response, Categoria.class);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    public void getAllMarcasAPI( String token, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "marcas?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta  marcas", response);
+
+                    marcas = Utils.parseJsonToList(response, Marca.class);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
+
+    public void getAllEstadosAPI( String token, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "estados?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    Log.d("Resposta  estados", response);
+
+                    estados = Utils.parseJsonToList(response, Estado.class);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
 
     public void getAllMetodoExpedicaoAPI( String token, final Context context){
         // Realizando a requisição GET
@@ -635,6 +838,35 @@ public class Singleton {
                     if (metodoExpedicaoListener != null) {
                         metodoExpedicaoListener.onRefreshMetodoExpedicao(metodoexpedicaos);
                     }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utils.displayError(error, context);
+                }
+            });
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            volleyQueue.add(stringRequest);
+        }
+    }
+    public void getAllTamanhosAPI( String token, final Context context){
+        // Realizando a requisição GET
+        if(!Utils.isConnectionInternet(context)){
+            Toast.makeText(context, "Não tem ligação a Internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String url = baseUrl + "tamanhos?access-token=" + token;
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+
+                    tamanhos = Utils.parseJsonToList(response, Tamanho.class);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -700,6 +932,24 @@ public class Singleton {
     /// Functions ITEMS
     public ArrayList<Artigo> getArtigos(){
         return new ArrayList<>(artigos);
+    }
+    public ArrayList<Artigo> filtrarArtigos(String nome, String marca, String estado) {
+        ArrayList<Artigo> filtrados = new ArrayList<>();
+        ArrayList<Artigo> copia = new ArrayList<>(artigos);
+
+        for (Artigo artigo : copia) {
+            boolean nomeMatch = nome.isEmpty() || artigo.getNome().toLowerCase().trim().
+                    contains(nome.toLowerCase().trim());
+            boolean marcaMatch = marca.isEmpty() || artigo.getMarca().
+                    equals(marca);
+            boolean estadoMatch = estado.isEmpty() || artigo.getEstado().toLowerCase().trim().
+                    contains(estado.toLowerCase().trim());
+
+            if (nomeMatch && marcaMatch && estadoMatch) {
+                filtrados.add(artigo);
+            }
+        }
+        return filtrados;
     }
     public Artigo getArtigo(int id){
         for(Artigo l:artigos){
@@ -770,10 +1020,12 @@ public class Singleton {
                     Artigo artigo = Utils.fromJson(response, Artigo.class);
                     favoritos.add(artigo);
                     adicionarArtigoBD(artigo);
-
                     if (refreshArtigosListener != null) {
                         refreshArtigosListener.onRefreshListaArtigos();
 
+                    }
+                    if (refreshEstadoLike != null) {
+                        refreshEstadoLike.onRefreshEstadoLike(artigo);
                     }
 
                 }
@@ -813,13 +1065,14 @@ public class Singleton {
                 @Override
                 public void onResponse(String response) {
                     Log.d("Resposta linhacarrinho", response);
+                    artigo.setLiked(false);
 
                     removerArtigoBD(artigo);
                     if (refreshArtigosListener!= null ) {
                         refreshArtigosListener.onRefreshListaArtigos();
                     }
-                    if (refreshFavoritosAfterActionListener!= null ) {
-                        refreshFavoritosAfterActionListener.onRefreshListaFavoritosAfterAction();
+                    if (refreshEstadoLike != null) {
+                        refreshEstadoLike.onRefreshEstadoLike(artigo);
                     }
 
                 }
@@ -846,15 +1099,6 @@ public class Singleton {
 
         return tipopagamentos.get(position);
     }
-    public Metodoexpedicao getMetodoExpedicaoById(int id){
-        for(Metodoexpedicao l:metodoexpedicaos){
-            if(l.getId() == id){
-                return l;
-            }
-        }
-        return null;
-    }
-
     public Metodoexpedicao getMetodoExpedicaoByPosition(int position){
         return metodoexpedicaos.get(position);
     }
@@ -872,6 +1116,19 @@ public class Singleton {
     }
 
     /// get historico
+    public  ArrayList<Categoria> getCategorias() {
+        return new ArrayList<>(categorias);
+    }
+    public  ArrayList<Tamanho> getTamanhos() {
+        return new ArrayList<>(tamanhos);
+    }
+
+    public  ArrayList<Marca> getMarcas() {
+        return new ArrayList<>(marcas);
+    }
+    public  ArrayList<Estado> getEstados() {
+        return new ArrayList<>(estados);
+    }
 
     public  ArrayList<Fatura> getFaturas() {
         return new ArrayList<>(faturas);
